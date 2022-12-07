@@ -1,0 +1,14 @@
+DROP TABLE user;
+DROP TABLE role;
+DROP TABLE favorite_place;
+DROP TABLE place;
+DROP TABLE house_type;
+DROP TABLE review;
+DROP TABLE type;
+DROP TABLE place_type;
+DROP TABLE achieve;
+DROP TABLE user_achieve;
+DROP TABLE week;
+DROP TABLE dayy;
+DROP TABLE tour;
+DROP TABLE tour_place;
