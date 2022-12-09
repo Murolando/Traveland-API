@@ -6,10 +6,18 @@ import (
 	"traveland/pkg/handler"
 	"traveland/pkg/repository"
 	"traveland/pkg/service"
+
+	_"github.com/lib/pq"
 )
 
 func main() {
-    repository := repository.NewRepository()
+	
+	dbConfig := repository.NewConfig("localhost",5432,"postgres","123","app_bd")
+	db,err := repository.NewPostgresDB(dbConfig)
+	if err != nil{
+		log.Fatal("Problems with db connect ",err)
+	}
+    repository := repository.NewRepository(db)
     service := service.NewService(repository)
     handler := handler.NewHandler(service)
 
@@ -29,4 +37,4 @@ func main() {
 	password = "123"
 	dbname   = "api_db"
 )*/
-// pq - driver ,sqlx - interfase  , pgx - driver+interfase
+

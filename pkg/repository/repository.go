@@ -1,14 +1,16 @@
 package repository
 
-import "traveland/ent"
+import (
+	"traveland/ent"
+
+	"github.com/jmoiron/sqlx"
+)
 
 type Authorization interface {
-	CreateUser(ent.User)(int, error)
-	LoginUser(ent.User)(bool,error)
+	CreateUser(user ent.User) (int, error)
 }
 
 type Place interface {
-	
 }
 
 type Guide interface {
@@ -20,6 +22,8 @@ type Repository struct {
 	Guide
 }
 
-func NewRepository() *Repository {
-	return &Repository{}
+func NewRepository(db *sqlx.DB) *Repository {
+	return &Repository{
+		Authorization: NewAuthPostgres(db),
+	}
 }

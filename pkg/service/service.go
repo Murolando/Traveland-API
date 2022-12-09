@@ -1,8 +1,12 @@
 package service
 
-import "traveland/pkg/repository"
+import (
+	"traveland/ent"
+	"traveland/pkg/repository"
+)
 
 type Authorization interface {
+	CreateUser(ent.User) (int, error)
 }
 
 type Place interface {
@@ -17,6 +21,8 @@ type Service struct {
 	Guide
 }
 
-func NewService(repos *repository.Repository) *Service {
-	return &Service{}
+func NewService(repo *repository.Repository) *Service {
+	return &Service{
+		Authorization: NewAuthService(repo.Authorization),
+	}
 }
