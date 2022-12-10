@@ -45,6 +45,16 @@ func (h *Handler) InitRountes() *gin.Engine {
 			place.GET("/get-all-place/", h.getAllPlace)
 			place.GET("/get-place-by-type/:type-id", h.getPlaceByType)
 		}
+		user := api.Group("/user")
+		{
+			// user.POST("/add-user", h.addUser)
+			// user.DELETE("/delete-user/:id", h.delteUser)
+			// user.PUT("/update-user/:id", h.updateUser)
+			user.GET("/get-user/:id", h.getUserByID)
+
+			user.GET("/get-all-users/", h.getAllUsers)
+			user.GET("/get-users-by-role/:role-id", h.getUsersByRole)
+		}
 	}
 	return router
 }

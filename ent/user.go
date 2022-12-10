@@ -1,13 +1,13 @@
 package ent
 
 type User struct{
-	UserId   	int	  	`json:"user-id"`
-	Name 	   	string 	`json:"name"`
-	LastName 	string 	`json:"last-name"`
-	Number 		string  `json:"number"`
-	Sex 		bool    `json:"sex"`
-	Mail        string	`json:"mail"`
-	Password	string 	`json:"password"`
-	RegisterTime string `json:"register-time"`
-	Role_id 	int 	`json:"role-id"`
+	UserId   	int	  	`json:"user-id" db:"id"`
+	Name 	   	string 	`json:"name" db:"name"`
+	LastName 	string 	`json:"last-name" db:"last_name"`
+	Number 		string  `json:"number" db:"numbers"`
+	Sex 		bool    `json:"sex" db:"sex"`
+	Mail        string	`json:"mail" db:"email"`
+	Password	string 	`json:"password" db:"password_hash"`
+	RegisterTime string `json:"register-time" db:"registration_datetime"`
+	Role_id 	int 	`json:"role-id" db:"role_id"`
 }
