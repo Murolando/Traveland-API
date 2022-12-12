@@ -7,9 +7,12 @@ import (
 
 type Authorization interface {
 	CreateUser(ent.User) (int, error)
+	GenerateToken(mail string, password string) (string,error)
+	ParseToken(token string) (int,error)
 }
 
 type Place interface {
+	CreatePlace(place ent.Place) (int,error)
 }
 
 type Guide interface {
@@ -32,5 +35,6 @@ func NewService(repo *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repo.Authorization),
 		User: NewUserCRUDService(repo.User),
+		Place: NewPlaceCRUDService(repo.Place),
 	}
 }

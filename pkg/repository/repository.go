@@ -8,10 +8,12 @@ import (
 
 type Authorization interface {
 	CreateUser(user ent.User) (int, error)
+	GetUserByMailAndPassword(mail string , password string)(int, error)
 	
 }
 
 type Place interface {
+	CreatePlace(place ent.Place) (int,error)
 }
 type Guide interface {
 }
@@ -32,5 +34,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
 		User: NewUserCRUD(db),
+		Place: NewPlaceCRUDPostgres(db),
 	}
 }

@@ -22,6 +22,6 @@ func (s UserCRUDService) GetUserByID(id int) (ent.User, error) {
 func (s UserCRUDService) GetAllUsers() ([]ent.User,error) {
 	return s.repo.GetAllUsers()
 }
-func(s UserCRUDService)  GetUsersByRole(role_id int) ([]ent.User,error){
+func (s UserCRUDService) GetUsersByRole(role_id int) ([]ent.User,error){
 	return s.repo.GetUsersByRole(role_id)
 }

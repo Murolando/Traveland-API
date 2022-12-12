@@ -35,3 +35,13 @@ func (r AuthPostgres) CreateUser(user ent.User) (int, error) {
 	}
 	return id,nil
 }
+
+func (r AuthPostgres)  GetUserByMailAndPassword(mail string , password string)(int, error){
+	var id int
+	query := fmt.Sprintf("SELECT id FROM \"%s\" WHERE email = $1 AND password_hash = $2",userTable)
+	row := r.db.QueryRow(query,mail,password)
+	if err := row.Scan(&id);err!=nil{
+		return 0, err
+	}
+	return id,nil
+}

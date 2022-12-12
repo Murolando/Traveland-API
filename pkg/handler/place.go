@@ -17,7 +17,6 @@ func (h *Handler) getPlaceByID(c *gin.Context) {
 
 }
 
-
 func (h *Handler) getAllPlace(c *gin.Context) {
 
 }
