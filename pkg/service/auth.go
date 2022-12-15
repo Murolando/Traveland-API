@@ -46,6 +46,9 @@ func (s AuthService) generateHashPassword(password string) string {
 func (s AuthService) GenerateToken(mail string, password string) (string, error) {
 	userId, err := s.repo.GetUserByMailAndPassword(mail, s.generateHashPassword(password))
 	if err != nil {
+		if userId == -1{
+			return "", fmt.Errorf("wrong password")
+		}
 		return "", err
 	}
 

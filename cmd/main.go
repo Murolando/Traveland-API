@@ -12,7 +12,7 @@ import (
 
 func main() {
 	
-	dbConfig := repository.NewConfig("localhost",5432,"postgres","123","app_bd")
+	dbConfig := repository.NewConfig("database",5432,"postgres","123","postgres")
 	db,err := repository.NewPostgresDB(dbConfig)
 	if err != nil{
 		log.Fatal("Problems with db connect ",err)
