@@ -12,12 +12,9 @@ type Authorization interface {
 }
 
 type Place interface {
-	CreatePlace(place ent.Place) (int,error)
+	GetPlaceByID(id int) (interface{}, error)
+	GetAllPlaces(placeInd int) (interface{}, error)
 }
-
-type Guide interface {
-}
-
 type User interface{
 	GetUserByID(id int) (ent.User,error)
 	GetAllUsers() ([]ent.User,error)
@@ -27,7 +24,6 @@ type User interface{
 type Service struct {
 	Authorization
 	Place
-	Guide
 	User
 }
 
@@ -35,6 +31,6 @@ func NewService(repo *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repo.Authorization),
 		User: NewUserCRUDService(repo.User),
-		Place: NewPlaceCRUDService(repo.Place),
+		Place: NewPlaceService(repo.Place),
 	}
 }

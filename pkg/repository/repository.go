@@ -13,9 +13,8 @@ type Authorization interface {
 }
 
 type Place interface {
-	CreatePlace(place ent.Place) (int,error)
-}
-type Guide interface {
+	GetPlaceByID(id int) (interface{}, error)
+	GetAllPlaces(placeInd int) (interface{}, error)
 }
 type User interface{
 	GetUserByID(id int) (ent.User, error)
@@ -26,14 +25,13 @@ type User interface{
 type Repository struct {
 	Authorization
 	Place
-	Guide
 	User
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
-		User: NewUserCRUD(db),
-		Place: NewPlaceCRUDPostgres(db),
+		User: NewUserBD(db),
+		Place: NewPlaceBD(db),
 	}
 }

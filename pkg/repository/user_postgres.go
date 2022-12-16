@@ -8,17 +8,17 @@ import (
 	// "github.com/lib/pq"
 )
 
-type UserCRUD struct {
+type UserBD struct {
 	db *sqlx.DB
 }
 
-func NewUserCRUD(db *sqlx.DB) *UserCRUD{
-	return &UserCRUD{
+func NewUserBD(db *sqlx.DB) *UserBD{
+	return &UserBD{
 		db: db,
 	}
 }
 
-func (r UserCRUD) GetUserByID(id int) (ent.User,error){
+func (r UserBD) GetUserByID(id int) (ent.User,error){
 	var user ent.User
 	query := fmt.Sprintf("SELECT id,name,last_name,password_hash,role_id,email,sex,registration_datetime FROM \"%s\" WHERE id = $1",userTable)
 	row := r.db.QueryRow(query,id)
@@ -27,7 +27,7 @@ func (r UserCRUD) GetUserByID(id int) (ent.User,error){
 	}
 	return user,nil
 }
-func (r UserCRUD) GetAllUsers() ([]ent.User,error){
+func (r UserBD) GetAllUsers() ([]ent.User,error){
 	users := make([]ent.User,0)
 	query := fmt.Sprintf("SELECT id,name,last_name,password_hash,role_id,email,sex,registration_datetime FROM \"%s\"",userTable)
 	rows,err := r.db.Query(query)
@@ -45,7 +45,7 @@ func (r UserCRUD) GetAllUsers() ([]ent.User,error){
 	}
 	return users,nil
 }
-func (r UserCRUD) GetUsersByRole(role_id int) ([]ent.User,error){
+func (r UserBD) GetUsersByRole(role_id int) ([]ent.User,error){
 	users := make([]ent.User,0)
 	query := fmt.Sprintf("SELECT id,name,last_name,password_hash,role_id,email,sex,registration_datetime FROM \"%s\" WHERE role_id = $1",userTable)
 	rows,err := r.db.Query(query,role_id)

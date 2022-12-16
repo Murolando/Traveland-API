@@ -1,20 +1,22 @@
 package service
 
 import (
-	"traveland/ent"
 	"traveland/pkg/repository"
 )
 
-type PlaceCRUDService struct {
+type PlaceService struct {
 	repo repository.Place
 }
 
-func NewPlaceCRUDService(repo repository.Place) *PlaceCRUDService {
-	return &PlaceCRUDService{
+func NewPlaceService(repo repository.Place) *PlaceService {
+	return &PlaceService{
 		repo: repo,
 	}
 }
 
-func (s PlaceCRUDService) CreatePlace(place ent.Place) (int, error) {
-	return s.repo.CreatePlace(place)
+func (s PlaceService) GetPlaceByID(id int) (interface{}, error){
+	return s.repo.GetPlaceByID(id)
+}
+func (s PlaceService) GetAllPlaces(placeInd int) (interface{}, error){
+	return s.repo.GetAllPlaces(placeInd)
 }
