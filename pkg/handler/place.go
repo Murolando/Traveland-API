@@ -29,7 +29,13 @@ func (h *Handler) getAllPlace(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	places, err := h.service.GetAllPlaces(id)
+
+	offset, err  := strconv.Atoi(c.Param("offset"))
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	places, err := h.service.GetAllPlaces(id, offset)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

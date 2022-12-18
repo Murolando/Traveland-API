@@ -13,7 +13,7 @@ type Authorization interface {
 
 type Place interface {
 	GetPlaceByID(id int) (interface{}, error)
-	GetAllPlaces(placeInd int) (interface{}, error)
+	GetAllPlaces(placeInd int,offset int) (interface{}, error)
 }
 type User interface{
 	GetUserByID(id int) (ent.User,error)
