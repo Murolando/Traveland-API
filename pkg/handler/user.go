@@ -29,7 +29,9 @@ func (h *Handler) getUserByID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"user": user,
+		"error": map[string]int{"code": 200,"description":0},
 	})
+	
 }
 
 func (h *Handler) getAllUsers(c *gin.Context) {
@@ -40,6 +42,7 @@ func (h *Handler) getAllUsers(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"users": users,
+		"error": map[string]int{"code": 200,"description":0},
 	})
 }
 
@@ -56,5 +59,6 @@ func (h *Handler) getUsersByRole(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"users": users,
+		"error": map[string]int{"code": 200,"description":0},
 	})
 }

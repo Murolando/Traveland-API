@@ -21,6 +21,7 @@ func (h *Handler) signUp(c *gin.Context) {
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
+		"error": map[string]int{"code": 200,"description":0},
 	})
 }
 
@@ -41,6 +42,7 @@ func (h *Handler) signIn(c *gin.Context) {
 	}
 	
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"token": token,
+		"result": token,
+		"error": map[string]int{"code": 200,"description":0},
 	})
 }

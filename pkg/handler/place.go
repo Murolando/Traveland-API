@@ -20,6 +20,7 @@ func (h *Handler) getPlaceByID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"place": place,
+		"error": map[string]int{"code": 200,"description":0},
 	})
 }
 
@@ -42,6 +43,7 @@ func (h *Handler) getAllPlace(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"places": places,
+		"error": map[string]int{"code": 200,"description":0},
 	})
 }
 func (h *Handler) getPlaceByType(c *gin.Context) {
