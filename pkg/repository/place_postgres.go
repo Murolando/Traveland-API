@@ -70,22 +70,24 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		return location, nil
 	}
 }
+
 func (r PlaceBD) GetAllPlaces(placeInd int) (interface{}, error) {
+	limit := 20
 	switch placeInd{
 	case 1:
-		houses,err := r.getAllHousing()
+		houses,err := r.getAllHousing(limit)
 		if err != nil{
 			return nil,err
 		}
 		return houses,nil
 	case 2:
-		events,err:=  r.getAllEvents()
+		events,err:=  r.getAllEvents(limit)
 		if err != nil{
 			return nil,err
 		}
 		return events,nil
 	default:
-		locals,err := r.getAllLocations()
+		locals,err := r.getAllLocations(limit)
 		if err != nil{
 			return nil,err
 		}
@@ -94,10 +96,10 @@ func (r PlaceBD) GetAllPlaces(placeInd int) (interface{}, error) {
 	
 }
 
-func (r PlaceBD) getAllHousing() (*[]ent.Housing,error){
+func (r PlaceBD) getAllHousing(limit int) (*[]ent.Housing,error){
 	houses := make([]ent.Housing,0)
-	query := fmt.Sprintf("SELECT id,name,description,location_long,location_lat,address,numbers,house_price,house_type_id,count_room,square FROM \"%s\"", placeTable)
-	rows,err := r.db.Query(query)
+	query := fmt.Sprintf(`SELECT place.id,place.name,place.description,place.location_long,place.location_lat,place.address,place.numbers,place.house_price,place.house_type_id,place.count_room,place.square FROM "%s" INNER JOIN "%s" ON place.id = place_type.place_id WHERE place_type.type_id = $1 LIMIT $2`, placeTable,placeTypeTable)
+	rows,err := r.db.Query(query,1,limit)
 	if err!=nil{
 		return nil,err
 	}
@@ -114,10 +116,10 @@ func (r PlaceBD) getAllHousing() (*[]ent.Housing,error){
 }
 
 
-func (r PlaceBD) getAllEvents() (*[]ent.Event,error){
+func (r PlaceBD) getAllEvents(limit int) (*[]ent.Event,error){
 	events := make([]ent.Event,0)
-	query := fmt.Sprintf("SELECT id,name,description,location_long,location_lat,address,numbers,pushkin,min_price FROM \"%s\"", placeTable)
-	rows,err := r.db.Query(query)
+	query := fmt.Sprintf(`SELECT place.id,place.name,place.description,place.location_long,place.location_lat,place.address,place.numbers,place.pushkin,place.min_price FROM "%s" INNER JOIN "%s" ON place.id = place_type.place_id WHERE place_type.type_id = $1 LIMIT $2`, placeTable,placeTypeTable)
+	rows,err := r.db.Query(query,2,limit)
 	if err!=nil{
 		return nil,err
 	}
@@ -133,10 +135,10 @@ func (r PlaceBD) getAllEvents() (*[]ent.Event,error){
 	return &events,nil
 }
 
-func (r PlaceBD) getAllLocations() (*[]ent.Location,error){
+func (r PlaceBD) getAllLocations(limit int) (*[]ent.Location,error){
 	locations := make([]ent.Location,0)
-	query := fmt.Sprintf("SELECT id,name,description,location_long,location_lat,address,numbers,pushkin,min_price\"%s\"", placeTable)
-	rows,err := r.db.Query(query)
+	query := fmt.Sprintf(`SELECT place.id,place.name,place.description,place.location_long,place.location_lat,place.address,place.numbers,place.pushkin,place.min_price FROM "%s" INNER JOIN "%s" ON place.id = place_type.place_id WHERE NOT place_type.type_id = $1 and NOT place_type.type_id = $2 LIMIT $3`, placeTable,placeTypeTable)
+	rows,err := r.db.Query(query,2,3,limit)
 	if err!=nil{
 		return nil,err
 	}

@@ -11,6 +11,5 @@ type Place struct{
 	Latitude	sql.NullFloat64	`json:"latitude"`
 	Longitude   sql.NullFloat64	`json:"longitude"`
 	Number 		sql.NullString  `json:"number"`
-	PlaceType   []int 			`json:"place-type"`
 }
 

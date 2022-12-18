@@ -79,6 +79,7 @@ CREATE TABLE "place_type"
 INSERT INTO "place_type" (place_id,type_id) values(1,1); 
 INSERT INTO "place_type" (place_id,type_id) values(2,3); 
 INSERT INTO "place_type" (place_id,type_id) values(3,2); 
+INSERT INTO "place_type" (place_id,type_id) values(4,2); 
 CREATE TABLE "achieve"
 (
     id                      serial PRIMARY KEY not null unique,
