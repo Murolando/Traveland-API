@@ -18,10 +18,7 @@ func (h *Handler) getPlaceByID(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"place": place,
-		"error": map[string]int{"code": 200,"description":0},
-	})
+	newResponse(c,"place",place)
 }
 
 func (h *Handler) getAllPlace(c *gin.Context) {
@@ -41,11 +38,19 @@ func (h *Handler) getAllPlace(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"places": places,
-		"error": map[string]int{"code": 200,"description":0},
-	})
+	newResponse(c,"places",places)
 }
-func (h *Handler) getPlaceByType(c *gin.Context) {
+func (h *Handler) getLocalByType(c *gin.Context) {
+	
+}
+
+func (h *Handler) getHouseByType(c *gin.Context) {
+	
+}
+func (h *Handler) getPlaceTypes(c *gin.Context) {
+	
+}
+
+func (h *Handler) getHouseTypes(c *gin.Context) {
 	
 }

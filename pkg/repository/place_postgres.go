@@ -17,6 +17,10 @@ func NewPlaceBD(db *sqlx.DB) *PlaceBD {
 	}
 }
 
+const (
+	limit int = 20
+)
+
 func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 	// take place types
 	query := fmt.Sprintf("SELECT type_id FROM \"%s\" WHERE place_id = $1", placeTypeTable)
@@ -72,7 +76,6 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 }
 
 func (r PlaceBD) GetAllPlaces(placeInd int,offset int) (interface{}, error) {
-	limit := 20
 	switch placeInd{
 	case 1:
 		houses,err := r.getAllHousing(limit,offset)
@@ -152,4 +155,42 @@ func (r PlaceBD) getAllLocations(limit int,offset int) (*[]ent.Location,error){
 		locations = append(locations, location)
 	}
 	return &locations,nil
+}
+
+func (r PlaceBD) GetLocalByType(placeType int,offset int) (*[]ent.Location, error) {
+	places := make([]ent.Location,0)
+	query := fmt.Sprintf(`SELECT place.id,place.name,place.description,place.location_long,place.location_lat,place.address,place.numbers,place.pushkin,place.min_price FROM "%s" INNER JOIN "%s" ON place.id = place_type.place_id WHERE place_type.type_id = $1 LIMIT $3 OFFSET $4`, placeTable,placeTypeTable)
+	rows,err := r.db.Query(query,placeType,3,limit,offset)
+	if err!=nil{
+		return nil,err
+	}
+	for rows.Next(){
+		var location ent.Location
+
+		if err := rows.Scan(&location.PlaceInfo.PlaceId, &location.PlaceInfo.Name, &location.PlaceInfo.Description, &location.PlaceInfo.Longitude, &location.PlaceInfo.Latitude, &location.PlaceInfo.Adress, &location.PlaceInfo.Number, &location.Pushkin,&location.MinPrice);err!=nil{
+			return nil, err
+		}
+
+		places = append(places, location)
+	}
+	return &places,nil
+}
+
+func (r PlaceBD) GetHouseByType(houseType int,offset int) (*[]ent.Housing, error) {
+	houses := make([]ent.Housing,0)
+	query := fmt.Sprintf(`SELECT place.id,place.name,place.description,place.location_long,place.location_lat,place.address,place.numbers,place.house_price,place.house_type_id,place.count_room,place.square FROM "%s" WHERE place.house_type_id = $1 LIMIT $2 OFFSET $3`, placeTable)
+	rows,err := r.db.Query(query,houseType,limit,offset)
+	if err!=nil{
+		return nil,err
+	}
+	for rows.Next(){
+		var house ent.Housing
+
+		if err := rows.Scan(&house.PlaceInfo.PlaceId, &house.PlaceInfo.Name, &house.PlaceInfo.Description, &house.PlaceInfo.Longitude, &house.PlaceInfo.Latitude, &house.PlaceInfo.Adress, &house.PlaceInfo.Number, &house.HousePrice, &house.HouseTypeId, &house.CountRoom, &house.Square);err!=nil{
+			return nil, err
+		}
+
+		houses = append(houses, house)
+	}
+	return &houses,nil
 }

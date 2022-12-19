@@ -35,7 +35,12 @@ func (h *Handler) InitRountes() *gin.Engine {
 
 			place.GET("/get-place/:id", h.getPlaceByID)
 			place.GET("/get-all-place/:place-ind/:offset", h.getAllPlace)
-			place.GET("/get-place-by-type/:type-id/:offset", h.getPlaceByType)
+
+			place.GET("/get-place-by-type/:type-id/:offset", h.getLocalByType)
+			place.GET("/get-house-by-type/:type-id/:offset", h.getHouseByType)
+
+			place.GET("/get-place-types",h.getPlaceTypes)
+			place.GET("/get-house-types",h.getHouseTypes)
 		}
 		user := api.Group("/user")
 		{

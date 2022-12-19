@@ -18,11 +18,7 @@ func (h *Handler) signUp(c *gin.Context) {
 		newErrorResponse(c,http.StatusInternalServerError, err.Error())
 		return
 	}
-
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"id": id,
-		"error": map[string]int{"code": 200,"description":0},
-	})
+	newResponse(c,"id",id)
 }
 
 type singInInput struct{
@@ -40,9 +36,5 @@ func (h *Handler) signIn(c *gin.Context) {
 		newErrorResponse(c,http.StatusInternalServerError, err.Error())
 		return
 	}
-	
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"result": token,
-		"error": map[string]int{"code": 200,"description":0},
-	})
+	newResponse(c,"token",token)
 }

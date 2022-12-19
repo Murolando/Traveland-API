@@ -27,11 +27,7 @@ func (h *Handler) getUserByID(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"user": user,
-		"error": map[string]int{"code": 200,"description":0},
-	})
-	
+	newResponse(c,"users",user)
 }
 
 func (h *Handler) getAllUsers(c *gin.Context) {
@@ -40,10 +36,7 @@ func (h *Handler) getAllUsers(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"users": users,
-		"error": map[string]int{"code": 200,"description":0},
-	})
+	newResponse(c,"users",users)
 }
 
 func (h *Handler) getUsersByRole(c *gin.Context) {
@@ -57,8 +50,5 @@ func (h *Handler) getUsersByRole(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"users": users,
-		"error": map[string]int{"code": 200,"description":0},
-	})
+	newResponse(c,"users",users)
 }
