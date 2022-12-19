@@ -159,8 +159,8 @@ func (r PlaceBD) getAllLocations(limit int,offset int) (*[]ent.Location,error){
 
 func (r PlaceBD) GetLocalByType(placeType int,offset int) (*[]ent.Location, error) {
 	places := make([]ent.Location,0)
-	query := fmt.Sprintf(`SELECT place.id,place.name,place.description,place.location_long,place.location_lat,place.address,place.numbers,place.pushkin,place.min_price FROM "%s" INNER JOIN "%s" ON place.id = place_type.place_id WHERE place_type.type_id = $1 LIMIT $3 OFFSET $4`, placeTable,placeTypeTable)
-	rows,err := r.db.Query(query,placeType,3,limit,offset)
+	query := fmt.Sprintf(`SELECT place.id,place.name,place.description,place.location_long,place.location_lat,place.address,place.numbers,place.pushkin,place.min_price FROM "%s" INNER JOIN "%s" ON place.id = place_type.place_id WHERE place_type.type_id = $1 LIMIT $2 OFFSET $3`, placeTable,placeTypeTable)
+	rows,err := r.db.Query(query,placeType,limit,offset)
 	if err!=nil{
 		return nil,err
 	}

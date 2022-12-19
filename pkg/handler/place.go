@@ -41,11 +41,42 @@ func (h *Handler) getAllPlace(c *gin.Context) {
 	newResponse(c,"places",places)
 }
 func (h *Handler) getLocalByType(c *gin.Context) {
-	
+	typeId, err := strconv.Atoi(c.Param("type-id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	offset, err := strconv.Atoi(c.Param("offset"))
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	places, err := h.service.GetLocalByType(typeId, offset)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	newResponse(c,"locals",places)
+
 }
 
 func (h *Handler) getHouseByType(c *gin.Context) {
-	
+	typeId, err := strconv.Atoi(c.Param("type-id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	offset, err := strconv.Atoi(c.Param("offset"))
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	places, err := h.service.GetHouseByType(typeId, offset)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	newResponse(c,"houses",places)
 }
 func (h *Handler) getPlaceTypes(c *gin.Context) {
 	

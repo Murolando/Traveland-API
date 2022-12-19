@@ -1,6 +1,7 @@
 package service
 
 import (
+	"traveland/ent"
 	"traveland/pkg/repository"
 )
 
@@ -14,9 +15,15 @@ func NewPlaceService(repo repository.Place) *PlaceService {
 	}
 }
 
-func (s PlaceService) GetPlaceByID(id int) (interface{}, error){
+func (s PlaceService) GetPlaceByID(id int) (interface{}, error) {
 	return s.repo.GetPlaceByID(id)
 }
-func (s PlaceService) GetAllPlaces(placeInd int,offset int) (interface{}, error){
-	return s.repo.GetAllPlaces(placeInd,offset)
+func (s PlaceService) GetAllPlaces(placeInd int, offset int) (interface{}, error) {
+	return s.repo.GetAllPlaces(placeInd, offset)
+}
+func (s PlaceService) GetLocalByType(placeType int, offset int) (*[]ent.Location, error){
+	return s.repo.GetLocalByType(placeType,offset)
+}
+func (s PlaceService)  GetHouseByType(houseType int,offset int) (*[]ent.Housing, error){
+	return s.repo.GetHouseByType(houseType,offset)
 }

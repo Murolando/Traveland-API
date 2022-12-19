@@ -15,6 +15,9 @@ type Authorization interface {
 type Place interface {
 	GetPlaceByID(id int) (interface{}, error)
 	GetAllPlaces(placeInd int,offset int) (interface{}, error)
+
+	GetLocalByType(placeType int,offset int) (*[]ent.Location, error)
+	GetHouseByType(houseType int,offset int) (*[]ent.Housing, error)
 }
 type User interface{
 	GetUserByID(id int) (ent.User, error)
