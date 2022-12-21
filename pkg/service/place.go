@@ -27,3 +27,9 @@ func (s PlaceService) GetLocalByType(placeType int, offset int) (*[]ent.Location
 func (s PlaceService)  GetHouseByType(houseType int,offset int) (*[]ent.Housing, error){
 	return s.repo.GetHouseByType(houseType,offset)
 }
+func (s PlaceService) GetLocalTypes() (*[]ent.LocalType,error){
+	return s.repo.GetLocalTypes()
+}
+func (s PlaceService) GetHouseTypes() (*[]ent.HouseType,error){
+	return s.repo.GetHouseTypes()
+}

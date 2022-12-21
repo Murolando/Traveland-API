@@ -17,6 +17,9 @@ type Place interface {
 
 	GetLocalByType(placeType int,offset int) (*[]ent.Location, error)
 	GetHouseByType(houseType int,offset int) (*[]ent.Housing, error)
+
+	GetLocalTypes() (*[]ent.LocalType,error)
+	GetHouseTypes() (*[]ent.HouseType,error)
 }
 type User interface{
 	GetUserByID(id int) (ent.User,error)

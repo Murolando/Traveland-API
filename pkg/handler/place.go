@@ -78,10 +78,20 @@ func (h *Handler) getHouseByType(c *gin.Context) {
 	}
 	newResponse(c,"houses",places)
 }
-func (h *Handler) getPlaceTypes(c *gin.Context) {
-	
+func (h *Handler) getLocalTypes(c *gin.Context) {
+	localTypes, err := h.service.GetLocalTypes()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	newResponse(c,"local-types",localTypes)
 }
 
 func (h *Handler) getHouseTypes(c *gin.Context) {
-	
+	houseTypes, err := h.service.GetHouseTypes()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	newResponse(c,"house-types",houseTypes)
 }

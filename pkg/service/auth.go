@@ -54,7 +54,7 @@ func (s AuthService) GenerateToken(mail string, password string) (string, error)
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(7 * 24 * time.Hour).Unix(), 
+			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(), 
 			IssuedAt:  time.Now().Unix(),
 		},
 		userId: userId,

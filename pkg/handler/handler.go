@@ -39,8 +39,10 @@ func (h *Handler) InitRountes() *gin.Engine {
 			place.GET("/get-place-by-type/:type-id/:offset", h.getLocalByType)
 			place.GET("/get-house-by-type/:type-id/:offset", h.getHouseByType)
 
-			place.GET("/get-place-types",h.getPlaceTypes)
+			place.GET("/get-local-types",h.getLocalTypes)
 			place.GET("/get-house-types",h.getHouseTypes)
+
+			
 		}
 		user := api.Group("/user")
 		{
