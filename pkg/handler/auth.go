@@ -31,10 +31,10 @@ func (h *Handler) signIn(c *gin.Context) {
 		newErrorResponse(c,http.StatusBadRequest, err.Error())
 		return
 	}
-	token, err := h.service.Authorization.GenerateToken(input.Mail, input.Password)
+	token, err, userId := h.service.Authorization.GenerateToken(input.Mail, input.Password)
 	if err != nil {
 		newErrorResponse(c,http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c,"token",token)
+	newResponse(c,"token",map[string]interface{}{"token":token,"user-id":userId})
 }

@@ -43,13 +43,13 @@ func (s AuthService) generateHashPassword(password string) string {
 }
 
 // Для генерации jwt токена
-func (s AuthService) GenerateToken(mail string, password string) (string, error) {
+func (s AuthService) GenerateToken(mail string, password string) (string, error, int) {
 	userId, err := s.repo.GetUserByMailAndPassword(mail, s.generateHashPassword(password))
 	if err != nil {
 		if userId == -1{
-			return "", fmt.Errorf("wrong password")
+			return "", fmt.Errorf("wrong password"),0
 		}
-		return "", err
+		return "", err,0
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
@@ -59,8 +59,8 @@ func (s AuthService) GenerateToken(mail string, password string) (string, error)
 		},
 		userId: userId,
 	})
-
-	return token.SignedString([]byte(signInKey))
+	str,err := token.SignedString([]byte(signInKey))
+	return str ,err,userId
 }
 
 // Сам хз как это работаети устроено !
