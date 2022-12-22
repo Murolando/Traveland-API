@@ -44,6 +44,14 @@ func (h *Handler) InitRountes() *gin.Engine {
 
 			
 		}
+		review := api.Group("/review")
+		{
+			review.POST("/add-review/", h.addReview)
+			review.DELETE("/delete-review/:id", h.delteReview)
+
+			review.PUT("/update-review/:id", h.updateReview)		
+			review.GET("/get-all-reviews/:place-id/:guide-id/:offset",h.getAllReview)
+		}
 		user := api.Group("/user")
 		{
 			// user.POST("/add-user", h.addUser)

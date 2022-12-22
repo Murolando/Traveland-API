@@ -4,7 +4,7 @@ import "database/sql"
 
 //  place -
 type Place struct{
-	PlaceId   		int	  			`json:"place_id"`
+	PlaceId   		int	  			`json:"place-id"`
 	Name 	   		string 			`json:"name"`
 	Description		string 			`json:"description"`
 	Adress 			string  		`json:"adress"`

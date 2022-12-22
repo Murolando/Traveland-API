@@ -5,7 +5,11 @@ import (
 
 	"github.com/jmoiron/sqlx"
 )
-
+type Review interface{
+	AddReview(review ent.Review) (int, error) 
+	DeleteReview(id int)(bool,error)
+	GetAllReview(placeId int,guideId int, offset int)([]ent.Review,error)
+}
 type Authorization interface {
 	CreateUser(user ent.User) (int, error)
 	GetUserByMailAndPassword(mail string , password string)(int, error)
@@ -32,6 +36,7 @@ type Repository struct {
 	Authorization
 	Place
 	User
+	Review
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -39,5 +44,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		Authorization: NewAuthPostgres(db),
 		User: NewUserBD(db),
 		Place: NewPlaceBD(db),
+		Review: NewReviewBD(db),
 	}
 }

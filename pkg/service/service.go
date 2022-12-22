@@ -4,7 +4,11 @@ import (
 	"traveland/ent"
 	"traveland/pkg/repository"
 )
-
+type Review interface{
+	AddReview(review ent.Review) (int,error)
+	DeleteReview(id int)(bool,error)
+	GetAllReview(placeId int,guideId int, offset int)([]ent.Review,error)
+}
 type Authorization interface {
 	CreateUser(ent.User) (int, error)
 	GenerateToken(mail string, password string) (string, error, int)
@@ -31,6 +35,7 @@ type Service struct {
 	Authorization
 	Place
 	User
+	Review
 }
 
 func NewService(repo *repository.Repository) *Service {
@@ -38,5 +43,6 @@ func NewService(repo *repository.Repository) *Service {
 		Authorization: NewAuthService(repo.Authorization),
 		User: NewUserCRUDService(repo.User),
 		Place: NewPlaceService(repo.Place),
+		Review: NewReviewService(repo.Review),
 	}
 }

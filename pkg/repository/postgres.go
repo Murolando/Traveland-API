@@ -23,6 +23,10 @@ const (
 	tourPlaceTable = "tour_place"
 )
 
+const (
+	limit int = 20
+)
+
 type Config struct {
 	host     string
 	port     int

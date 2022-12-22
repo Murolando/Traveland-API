@@ -17,9 +17,7 @@ func NewPlaceBD(db *sqlx.DB) *PlaceBD {
 	}
 }
 
-const (
-	limit int = 20
-)
+
 
 func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 	// take place types

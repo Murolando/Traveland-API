@@ -27,13 +27,11 @@ func (r AuthPostgres) CreateUser(user ent.User) (int, error) {
 	if user.Number != ""{
 		query := fmt.Sprintf("INSERT INTO \"%s\" (name, last_name, password_hash, numbers, role_id, sex,registration_datetime) values ($1 , $2 ,$3 ,$4, $5, $6, $7) RETURNING id", userTable)
 		row := r.db.QueryRow(query,user.Name, user.LastName, user.Password, user.Number,user.Role_id, user.Sex, user.RegisterTime)
-		row.Scan(&id)
 		if err := 	row.Scan(&id);err!=nil{
 			return 0,err
 		}
 	} else {
 		query := fmt.Sprintf("INSERT INTO \"%s\" (name,last_name, password_hash, role_id, email, sex, registration_datetime) values ($1 , $2 ,$3 ,$4, $5, $6,$7) RETURNING id", userTable)
-		
 		row := r.db.QueryRow(query,user.Name, user.LastName, user.Password, user.Role_id, user.Mail,user.Sex, user.RegisterTime)
 		if err := 	row.Scan(&id);err!=nil{
 			return 0,err
@@ -47,11 +45,9 @@ func (r AuthPostgres)  GetUserByMailAndPassword(mail string , password string)(i
 	var id int
 	query := fmt.Sprintf("SELECT id FROM \"%s\" WHERE email = $1",userTable)
 	row := r.db.QueryRow(query,mail)
-	fmt.Println(1)
 	if err := row.Scan(&id);err!=nil{
 		return 0, err
 	}
-	fmt.Println(2)
 	query = fmt.Sprintf("SELECT id FROM \"%s\" WHERE email = $1 AND password_hash = $2",userTable)
 	row = r.db.QueryRow(query,mail,password)
 	if err := row.Scan(&id);err!=nil{
