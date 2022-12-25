@@ -9,6 +9,7 @@ type Review interface{
 	AddReview(review ent.Review) (int, error) 
 	DeleteReview(id int)(bool,error)
 	GetAllReview(placeId int,guideId int, offset int)([]ent.Review,error)
+	UpdateReview(reviewId int,rating int, reviewText string) (bool,error)
 }
 type Authorization interface {
 	CreateUser(user ent.User) (int, error)
@@ -30,6 +31,7 @@ type User interface{
 	GetUserByID(id int) (ent.User, error)
 	GetAllUsers()([]ent.User,error)
 	GetUsersByRole(role_id int) ([]ent.User,error)
+	UpdateUserInfo(user ent.User)(bool,error)
 
 }
 type Repository struct {

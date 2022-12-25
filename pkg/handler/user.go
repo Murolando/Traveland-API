@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 	"strconv"
+	"traveland/ent"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,11 +15,22 @@ func (h *Handler) delteUser(c *gin.Context) {
 
 }
 func (h *Handler) updateUser(c *gin.Context) {
+	var input ent.User
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	end, err := h.service.User.UpdateUserInfo(input)
+	if err != nil {
+		newErrorResponse(c,http.StatusInternalServerError, err.Error())
+		return
+	}
+	newResponse(c,"result",end)
 
 }
 func (h *Handler) getUserByID(c *gin.Context) {
-	id,err := strconv.Atoi(c.Param("id"))
-	if err != nil{
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -27,7 +39,7 @@ func (h *Handler) getUserByID(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c,"users",user)
+	newResponse(c, "users", user)
 }
 
 func (h *Handler) getAllUsers(c *gin.Context) {
@@ -36,12 +48,12 @@ func (h *Handler) getAllUsers(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c,"users",users)
+	newResponse(c, "users", users)
 }
 
 func (h *Handler) getUsersByRole(c *gin.Context) {
-	role_id,err := strconv.Atoi(c.Param("role-id"))
-	if err != nil{
+	role_id, err := strconv.Atoi(c.Param("role-id"))
+	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -50,5 +62,5 @@ func (h *Handler) getUsersByRole(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c,"users",users)
+	newResponse(c, "users", users)
 }

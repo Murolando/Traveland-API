@@ -90,3 +90,15 @@ func (r ReviewBD) GetAllReview(placeId int,guideId int, offset int)([]ent.Review
 	return reviews,nil
 }
 
+func (r ReviewBD) UpdateReview(reviewId int,rating int, reviewText string) (bool,error){
+	t := time.Now()
+	time := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d\n",
+		t.Year(), t.Month(), t.Day(),
+		t.Hour(), t.Minute(), t.Second())
+	query := fmt.Sprintf(`UPDATE "%s" SET rating = $1, review_text = $2, review_datetime = $3 WHERE id = $4`,reviewTable)
+	_,err := r.db.Exec(query,rating,reviewText,time,reviewId)
+	if err!=nil{
+		return false,err
+	}
+	return true,nil
+}

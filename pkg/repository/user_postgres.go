@@ -63,3 +63,12 @@ func (r UserBD) GetUsersByRole(role_id int) ([]ent.User,error){
 	}
 	return users,nil
 }
+
+func (r UserBD) UpdateUserInfo(user ent.User)(bool,error){
+	query := fmt.Sprintf(`UPDATE "%s" SET name = $1,last_name = $2,password_hash = $3,email = $4,sex = $5 WHERE id = $6`,userTable)
+	_,err := r.db.Exec(query,user.Name,user.LastName,user.Password,user.Mail,user.Sex,user.UserId)
+	if err!=nil{
+		return false,err
+	}
+	return true,nil
+}

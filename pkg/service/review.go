@@ -23,3 +23,6 @@ func (s *ReviewService) DeleteReview(id int)(bool,error){
 func (s *ReviewService) GetAllReview(placeId int,guideId int, offset int)([]ent.Review,error){
 	return s.repo.GetAllReview(placeId,guideId,offset)
 }
+func (s *ReviewService) UpdateReview(reviewId int,rating int, reviewText string) (bool,error){
+	return s.repo.UpdateReview(reviewId,rating,reviewText)
+}

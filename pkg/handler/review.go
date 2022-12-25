@@ -40,9 +40,9 @@ func (h *Handler) delteReview(c *gin.Context) {
 	}
 	
 }
-func (h *Handler) updateReview(c *gin.Context) {
+// func (h *Handler) updateReview(c *gin.Context) {
 
-}
+// }
 func (h *Handler) getAllReview(c *gin.Context) {
 	placeId, err := strconv.Atoi(c.Param("place-id"))
 	if err != nil {
