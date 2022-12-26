@@ -25,7 +25,7 @@ func (h *Handler) updateUser(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c, "result", end)
+	newResponse(c, "", end)
 
 }
 func (h *Handler) getUserByID(c *gin.Context) {

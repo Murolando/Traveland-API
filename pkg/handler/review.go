@@ -33,7 +33,7 @@ func (h *Handler) delteReview(c *gin.Context) {
 		return
 	}
 	if t == true{
-		newResponse(c, "result", true)
+		newResponse(c, "", true)
 	}else{
 		newErrorResponse(c, http.StatusInternalServerError,"records are missing")
 		return

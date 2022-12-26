@@ -18,7 +18,7 @@ func NewHandler(service *service.Service) *Handler {
 
 func (h *Handler) InitRountes() *gin.Engine {
 	router := gin.New()
-
+	router.Static("/storage","./storage")
 	auth := router.Group("/auth")
 	{
 		auth.POST("/sign-up", h.signUp)
@@ -33,6 +33,7 @@ func (h *Handler) InitRountes() *gin.Engine {
 			// place.DELETE("/delete-place/:id", h.deltePlace)
 			// place.PUT("/update-place/:id", h.updatePlace)
 
+			
 			place.GET("/get-place/:id", h.getPlaceByID)
 			place.GET("/get-all-place/:place-ind/:offset", h.getAllPlace)
 
