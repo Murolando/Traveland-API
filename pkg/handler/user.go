@@ -22,10 +22,10 @@ func (h *Handler) updateUser(c *gin.Context) {
 	}
 	end, err := h.service.User.UpdateUserInfo(input)
 	if err != nil {
-		newErrorResponse(c,http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c,"result",end)
+	newResponse(c, "result", end)
 
 }
 func (h *Handler) getUserByID(c *gin.Context) {
@@ -57,7 +57,13 @@ func (h *Handler) getUsersByRole(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	users, err := h.service.GetUsersByRole(role_id)
+	offset, err := strconv.Atoi(c.Param("offset"))
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	
+	users, err := h.service.GetUsersByRole(role_id, offset)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

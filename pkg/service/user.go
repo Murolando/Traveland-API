@@ -24,8 +24,8 @@ func (s UserCRUDService) GetUserByID(id int) (ent.User, error) {
 func (s UserCRUDService) GetAllUsers() ([]ent.User, error) {
 	return s.repo.GetAllUsers()
 }
-func (s UserCRUDService) GetUsersByRole(role_id int) ([]ent.User, error) {
-	return s.repo.GetUsersByRole(role_id)
+func (s UserCRUDService) GetUsersByRole(role_id int,offset int) ([]ent.User, error) {
+	return s.repo.GetUsersByRole(role_id, offset)
 }
 func (s UserCRUDService) UpdateUserInfo(user ent.User) (bool, error) {
 	user.Password = s.generateHashPassword(user.Password)

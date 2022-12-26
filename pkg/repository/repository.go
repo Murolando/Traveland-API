@@ -30,7 +30,7 @@ type Place interface {
 type User interface{
 	GetUserByID(id int) (ent.User, error)
 	GetAllUsers()([]ent.User,error)
-	GetUsersByRole(role_id int) ([]ent.User,error)
+	GetUsersByRole(role_id int,offset int) ([]ent.User,error)
 	UpdateUserInfo(user ent.User)(bool,error)
 
 }

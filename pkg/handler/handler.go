@@ -60,7 +60,7 @@ func (h *Handler) InitRountes() *gin.Engine {
 			user.POST("/update-user/", h.updateUser)
 			user.GET("/get-user/:id", h.getUserByID)
 			user.GET("/get-all-users/", h.getAllUsers)
-			user.GET("/get-users-by-role/:role-id", h.getUsersByRole)
+			user.GET("/get-users-by-role/:role-id/:offset", h.getUsersByRole)
 		}
 	}
 	return router

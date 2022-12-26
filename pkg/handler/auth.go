@@ -36,5 +36,5 @@ func (h *Handler) signIn(c *gin.Context) {
 		newErrorResponse(c,http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c,"token",map[string]interface{}{"token":token,"user-id":userId})
+	newResponse(c,"",map[string]interface{}{"token":token,"user-id":userId})
 }

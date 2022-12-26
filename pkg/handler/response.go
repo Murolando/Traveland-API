@@ -19,8 +19,15 @@ func newErrorResponse(c *gin.Context, statusCode int, message string) {
 	})
 }
 func newResponse(c *gin.Context, str string, structure interface{}) {
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"result": map[string]interface{}{str: structure},
-		"error":  map[string]int{"code": 200},
-	})
+	if str == ""{
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"result": structure,
+			"error":  map[string]int{"code": 200},
+		})
+	}else{
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"result": map[string]interface{}{str: structure},
+			"error":  map[string]int{"code": 200},
+		})
+	}
 }

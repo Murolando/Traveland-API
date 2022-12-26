@@ -45,10 +45,10 @@ func (r UserBD) GetAllUsers() ([]ent.User,error){
 	}
 	return users,nil
 }
-func (r UserBD) GetUsersByRole(role_id int) ([]ent.User,error){
+func (r UserBD) GetUsersByRole(role_id int,offset int) ([]ent.User,error){
 	users := make([]ent.User,0)
-	query := fmt.Sprintf("SELECT id,name,last_name,password_hash,role_id,email,sex,registration_datetime FROM \"%s\" WHERE role_id = $1",userTable)
-	rows,err := r.db.Query(query,role_id)
+	query := fmt.Sprintf("SELECT id,name,last_name,password_hash,role_id,email,sex,registration_datetime FROM \"%s\" WHERE role_id = $1 OFFSET $2 LIMIT $3",userTable)
+	rows,err := r.db.Query(query,role_id,offset,limit)
 	if err!=nil{
 		return nil,err
 	}
