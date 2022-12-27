@@ -179,7 +179,7 @@ func (r PlaceBD) getAllEvents(limit int, offset int) (*[]ent.Event, error) {
 func (r PlaceBD) getAllLocations(limit int, offset int) (*[]ent.Location, error) {
 	locations := make([]ent.Location, 0)
 	query := fmt.Sprintf(`SELECT place.id,place.name,place.location_long,place.location_lat,place.address,place.min_price FROM "%s" INNER JOIN "%s" ON place.id = place_type.place_id WHERE NOT place_type.type_id = $1 and NOT place_type.type_id = $2 LIMIT $3 OFFSET $4`, placeTable, placeTypeTable)
-	rows, err := r.db.Query(query, 2, 3, limit, offset)
+	rows, err := r.db.Query(query, 2, 1, limit, offset)
 	if err != nil {
 		return nil, err
 	}
