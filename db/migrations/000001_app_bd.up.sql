@@ -30,19 +30,21 @@ CREATE TABLE "place"
 (
     id                      serial PRIMARY KEY not null unique,
     name                    varchar(255) not null,
-    description             varchar(255),
+    description             text,
     location_long           double precision NOT NULL,
     location_lat            double precision NOT NULL,
     min_price               int,
     address                 VARCHAR(100),
     numbers                 VARCHAR(11),
+    mail                    VARCHAR(30),
+    site_url                VARCHAR(150),
     pushkin                 boolean DEFAULT FALSE,
     house_price             INT,
     house_type_id           int references "house_type" (id) on delete cascade,
     count_room              INT DEFAULT 0, 
     square                  INT DEFAULT 0
 );
-INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,house_price,house_type_id) values('hotel1','jil',0.0,0.0,'jil','8928',1400,1);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,mail,site_url,house_price,house_type_id) values('hotel1','vladik alooo',0.0,0.0,'jil','8928','jilnya','ublya',1400,1);
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('place1','jil',0.0,0.0,'jil','8928',TRUE,2500);  
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event','jil',0.0,0.0,'jil','8928',TRUE,350);
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event2','jil',0.0,0.0,'jil','8928',TRUE,350);

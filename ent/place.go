@@ -11,8 +11,10 @@ type Place struct{
 	Latitude		sql.NullFloat64		`json:"latitude"`
 	Longitude   	sql.NullFloat64		`json:"longitude"`
 	Number 			sql.NullString  	`json:"number"`
-	NumberOfRating	sql.NullFloat64 	`json:"number-of-rating"`
+	Mail			sql.NullString		`json:"mail"`
+	Url				sql.NullString		`json:"url"`
+	NumberOfRating	sql.NullInt32 		`json:"number-of-rating"`
 	MeanRating      sql.NullFloat64 	`json:"mean-rating"`
-	Photos			[]sql.NullString	`json:"photos"`	
+	Photos			[]string			`json:"photos"`	
 }
 
