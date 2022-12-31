@@ -19,6 +19,7 @@ func NewHandler(service *service.Service) *Handler {
 func (h *Handler) InitRountes() *gin.Engine {
 	router := gin.New()
 	router.Static("/storage","./storage")
+	// router.StaticFS("/more_static", http.Dir("my_file_system"))
 	auth := router.Group("/auth")
 	{
 		auth.POST("/sign-up", h.signUp)
