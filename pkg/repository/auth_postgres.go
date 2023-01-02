@@ -93,7 +93,7 @@ func (r AuthPostgres) setDefault(id int) error {
 
 	defer source.Close()
 	defer new.Close()
-	fmt.Println(2)
+	// fmt.Println(2)
 	_, err = io.Copy(new, source)
 	return nil
 }
