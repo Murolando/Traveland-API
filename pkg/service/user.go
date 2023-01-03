@@ -37,3 +37,11 @@ func (s UserCRUDService) generateHashPassword(password string) string {
 	hash := sha256.Sum256([]byte(password))
 	return fmt.Sprintf("%x", hash)
 }
+
+func (s UserCRUDService) AddPhoto(userId int,photo []byte,imgExt string) (bool,error) {
+	result,err :=s.repo.AddPhoto(userId,photo,imgExt)
+	if err!=nil{
+		return false,err
+	}
+	return result,nil
+}

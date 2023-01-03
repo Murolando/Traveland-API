@@ -32,6 +32,7 @@ type User interface{
 	GetAllUsers()([]ent.User,error)
 	GetUsersByRole(role_id int,offset int) ([]ent.User,error)
 	UpdateUserInfo(user ent.User)(bool,error)
+	AddPhoto(userId int,photo []byte,imgExt string) (bool, error)
 
 }
 type Repository struct {

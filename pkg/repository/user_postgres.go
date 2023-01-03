@@ -107,3 +107,43 @@ func (r UserBD) getPhoto(userId int) (string, error) {
 	}
 	return photo, nil
 }
+func (r UserBD) AddPhoto(userId int,photo []byte,imgExt string) (bool, error) {
+	// user exist
+	var id int
+	query := fmt.Sprintf("SELECT id FROM \"%s\" WHERE id = $1", userTable)
+	row := r.db.QueryRow(query,userId)
+	if err := row.Scan(&id);err!=nil{
+		return false, err
+	}
+	// delete photo
+	err := filepath.Walk(fmt.Sprintf("./storage/user/%d",userId),
+	// err := filepath.Walk("./storage/place",
+		func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if !info.IsDir() {
+				err2 := os.Remove(path)
+				if err2 != nil {
+					return err
+				}
+			}
+			return nil
+		})
+	if err != nil {
+		return false,err
+	}
+	// addPhoto
+	fullFileName := fmt.Sprintf("%d.%s", userId, imgExt)
+	fileOnDisk, err := os.Create(fmt.Sprintf("%s/%s", fmt.Sprintf("./storage/user/%d", userId), fullFileName))
+	if err != nil {
+		return false,err
+	}
+	defer fileOnDisk.Close()
+
+	_, err = fileOnDisk.Write(photo)
+	if err != nil {
+		return false,err
+	}
+	return true, nil
+}

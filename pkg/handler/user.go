@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 	"traveland/ent"
 
 	"github.com/gin-gonic/gin"
@@ -62,11 +64,56 @@ func (h *Handler) getUsersByRole(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	
+
 	users, err := h.service.GetUsersByRole(role_id, offset)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	newResponse(c, "users", users)
+}
+func (h *Handler) addPhoto(c *gin.Context) {
+
+	// form reader
+	userId,_ := strconv.Atoi(c.PostForm("user-id"))
+
+	form, _ := c.MultipartForm()
+	// filename
+	var fileName string
+	imgExt := "jpeg"
+
+	// берем первое имя файла из присланного списка
+	for key := range form.File {
+		fileName = key
+		// извлекаем расширение файла
+		arr := strings.Split(fileName, ".")
+		if len(arr) > 1 {
+			imgExt = arr[len(arr)-1]
+		}
+		continue
+	}
+
+	// извлекаем содержание присланного файла по названию файла
+	file, _, err := c.Request.FormFile(fileName)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	defer file.Close()
+
+	// читаем содержание присланного файл в []byte
+	fileBytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	result, err := h.service.AddPhoto(userId, fileBytes, imgExt)
+	if err != nil{
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	
+	// берем первое имя файла из присланного списка
+	newResponse(c, "", result)
 }

@@ -48,6 +48,15 @@ INSERT INTO "place" (name,description,location_long,location_lat,address,numbers
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('place1','jil',0.0,0.0,'jil','8928',TRUE,2500);  
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event','jil',0.0,0.0,'jil','8928',TRUE,350);
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event2','jil',0.0,0.0,'jil','8928',TRUE,350);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event3','jil',0.0,0.0,'jil','8928',TRUE,350);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event4','jil',0.0,0.0,'jil','8928',TRUE,350);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event5','jil',0.2,1.1255,'jil','8928',TRUE,350);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event6','jil',0.0,0.0,'jil','8928',TRUE,350);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event7','jil',13.7,0.0,'jil','8928',TRUE,350);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event8','jil',0.0,0.0,'jil','8928',TRUE,350);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event9','jil',0.0,-1552.14,'jil','8928',FALSE,350);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event10','jil',0.0,0.0,'jil','8928',FALSE,350);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event11','jil',0.0,0.0,'jil','8928',TRUE,350);
 CREATE TABLE "favorite_place"
 (
     id                      serial PRIMARY KEY not null unique,
@@ -82,6 +91,15 @@ INSERT INTO "place_type" (place_id,type_id) values(1,1);
 INSERT INTO "place_type" (place_id,type_id) values(2,3); 
 INSERT INTO "place_type" (place_id,type_id) values(3,2); 
 INSERT INTO "place_type" (place_id,type_id) values(4,2); 
+INSERT INTO "place_type" (place_id,type_id) values(5,2); 
+INSERT INTO "place_type" (place_id,type_id) values(6,2); 
+INSERT INTO "place_type" (place_id,type_id) values(7,2); 
+INSERT INTO "place_type" (place_id,type_id) values(8,2); 
+INSERT INTO "place_type" (place_id,type_id) values(9,2); 
+INSERT INTO "place_type" (place_id,type_id) values(10,2); 
+INSERT INTO "place_type" (place_id,type_id) values(11,2); 
+INSERT INTO "place_type" (place_id,type_id) values(12,2); 
+INSERT INTO "place_type" (place_id,type_id) values(13,2); 
 CREATE TABLE "achieve"
 (
     id                      serial PRIMARY KEY not null unique,
