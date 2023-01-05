@@ -29,3 +29,4 @@ services:
 volumes:
   data:
   storage:
+    external: true
