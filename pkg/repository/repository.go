@@ -35,11 +35,15 @@ type User interface{
 	AddPhoto(userId int,photo []byte,imgExt string) (bool, error)
 
 }
+type Tour interface{
+	AddUserTour(fullTour ent.Tour) (bool, error)
+}
 type Repository struct {
 	Authorization
 	Place
 	User
 	Review
+	Tour
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -48,5 +52,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		User: NewUserBD(db),
 		Place: NewPlaceBD(db),
 		Review: NewReviewBD(db),
+		Tour: NewTourBD(db),
 	}
 }

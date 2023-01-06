@@ -139,8 +139,8 @@ CREATE TABLE "week"
 CREATE TABLE "tour"
 (
     id                      serial PRIMARY KEY  not null unique,
-    name                    varchar(40) not null,
-    description             TEXT not null,
+    name                    varchar(40) null,
+    description             TEXT null,
     user_id                 int references "user" (id) on delete cascade not null
 );
 CREATE TABLE "tour_place"
@@ -148,9 +148,9 @@ CREATE TABLE "tour_place"
     id                      serial PRIMARY KEY not null unique,
     tour_id                 int references "tour" (id) on delete cascade not null,
     place_id                int references "place" (id) on delete cascade not null,
-    location_long           double precision NOT NULL,
-    location_lat            double precision NOT NULL,
-    address                 varchar(100),
+    -- location_long           double precision NOT NULL,
+    -- location_lat            double precision NOT NULL,
+    -- address                 varchar(100),
     start_tour              boolean,
     end_tour                boolean
 );

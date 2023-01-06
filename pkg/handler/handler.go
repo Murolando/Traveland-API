@@ -67,6 +67,19 @@ func (h *Handler) InitRountes() *gin.Engine {
 			user.GET("/get-all-users/", h.getAllUsers)
 			user.GET("/get-users-by-role/:role-id/:offset", h.getUsersByRole)
 		}
+		tour := api.Group("/tour")
+		{
+
+			tour.POST("/add-user-tour/",h.addUserTour)
+			tour.GET("/get-all-user-tours/:user-id",h.getAllUserTours)
+			tour.DELETE("delete-user-tour/:tour-id",h.deleteUserTour)
+
+
+			tour.GET("/get-all-guide-tours/:guide-id",h.getAllGuideTours)
+			tour.GET("/get-tour-info/:tour-id",h.getTourInfo)
+			tour.GET("/get-all-tours/",h.getAllTours)
+			
+		}
 	}
 	return router
 }

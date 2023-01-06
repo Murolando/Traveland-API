@@ -41,10 +41,10 @@ func (r AuthPostgres) CreateUser(user ent.User) (int, error) {
 		}
 
 	}
-	err := r.setDefault(id)
-	if err != nil {
-		return 0, err
-	}
+	// err := r.setDefault(id)
+	// if err != nil {
+	// 	return 0, err
+	// }
 	return id, nil
 }
 
@@ -62,6 +62,7 @@ func (r AuthPostgres) GetUserByMailAndPassword(mail string, password string) (in
 	}
 	return id, nil
 }
+
 
 func (r AuthPostgres) setDefault(id int) error {
 	// fullFileName := fmt.Sprintf("%s.%s", "default", "png")

@@ -33,13 +33,18 @@ type User interface{
 	UpdateUserInfo(user ent.User)(bool,error)
 	AddPhoto(userId int,photo []byte,imgExt string) (bool,error)
 }
+type Tour interface{
+	AddUserTour(newTour ent.AddPoints)(bool,error)
+}
 
 type Service struct {
 	Authorization
 	Place
 	User
 	Review
+	Tour
 }
+
 
 func NewService(repo *repository.Repository) *Service {
 	return &Service{
@@ -47,5 +52,6 @@ func NewService(repo *repository.Repository) *Service {
 		User: NewUserCRUDService(repo.User),
 		Place: NewPlaceService(repo.Place),
 		Review: NewReviewService(repo.Review),
+		Tour: NewTourService(repo.Tour),
 	}
 }
