@@ -15,6 +15,6 @@ type Place struct{
 	Url				sql.NullString		`json:"url"`
 	NumberOfRating	sql.NullInt32 		`json:"number-of-rating"`
 	MeanRating      sql.NullFloat64 	`json:"mean-rating"`
-	Photos			[]string			`json:"photos"`	
+	// Photos			[]string			`json:"photos"`	
 }
 

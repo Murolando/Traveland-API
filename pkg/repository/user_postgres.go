@@ -27,11 +27,11 @@ func (r UserBD) GetUserByID(id int) (ent.User, error) {
 	if err := row.Scan(&user.UserId, &user.Name, &user.LastName, &user.Password, &user.Role_id, &user.Mail, &user.Sex, &user.RegisterTime); err != nil {
 		return ent.User{}, err
 	}
-	pht,err := r.getPhoto(id)
-	if err != nil{
-		return ent.User{}, err
-	}
-	user.Photo = append(user.Photo, pht)
+	// pht,err := r.getPhoto(id)
+	// if err != nil{
+	// 	return ent.User{}, err
+	// }
+	// user.Photo = append(user.Photo, pht)
 	return user, nil
 }
 func (r UserBD) GetAllUsers() ([]ent.User, error) {
@@ -47,11 +47,11 @@ func (r UserBD) GetAllUsers() ([]ent.User, error) {
 		if err := rows.Scan(&user.UserId, &user.Name, &user.LastName, &user.Password, &user.Role_id, &user.Mail, &user.Sex, &user.RegisterTime); err != nil {
 			return nil, err
 		}
-		pht,err := r.getPhoto(user.UserId)
-		if err != nil{
-			return nil, err
-		}
-		user.Photo = append(user.Photo, pht)
+		// pht,err := r.getPhoto(user.UserId)
+		// if err != nil{
+		// 	return nil, err
+		// }
+		// user.Photo = append(user.Photo, pht)
 		users = append(users, user)
 	}
 	return users, nil
@@ -69,11 +69,11 @@ func (r UserBD) GetUsersByRole(role_id int, offset int) ([]ent.User, error) {
 		if err := rows.Scan(&user.UserId, &user.Name, &user.LastName, &user.Password, &user.Role_id, &user.Mail, &user.Sex, &user.RegisterTime); err != nil {
 			return nil, err
 		}
-		pht,err := r.getPhoto(user.UserId)
-		if err != nil{
-			return nil, err
-		}
-		user.Photo = append(user.Photo, pht)
+		// pht,err := r.getPhoto(user.UserId)
+		// if err != nil{
+		// 	return nil, err
+		// }
+		// user.Photo = append(user.Photo, pht)
 		users = append(users, user)
 	}
 	return users, nil

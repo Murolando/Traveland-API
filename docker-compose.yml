@@ -24,9 +24,9 @@ services:
       - default
     ports:
       - "8000:8000"
-    volumes:
-     - storage:/storage
+    # volumes:
+    #  - storage:/storage/user
 volumes:
   data:
-  storage:
-    # external: true
+  # storage:
+  # external: true

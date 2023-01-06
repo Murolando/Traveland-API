@@ -60,7 +60,8 @@ func (h *Handler) InitRountes() *gin.Engine {
 			// user.POST("/add-user", h.addUser)
 			// user.DELETE("/delete-user/:id", h.delteUser)
 
-			user.POST("/add-photo/",h.addPhoto)
+			// user.POST("/add-photo/",h.addPhoto)
+
 			user.POST("/update-user/", h.updateUser)
 			user.GET("/get-user/:id", h.getUserByID)
 			user.GET("/get-all-users/", h.getAllUsers)

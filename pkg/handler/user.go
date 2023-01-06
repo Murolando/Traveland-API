@@ -72,6 +72,8 @@ func (h *Handler) getUsersByRole(c *gin.Context) {
 	}
 	newResponse(c, "users", users)
 }
+
+//DONT WORK
 func (h *Handler) addPhoto(c *gin.Context) {
 
 	// form reader
