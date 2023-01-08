@@ -34,7 +34,11 @@ type User interface{
 	AddPhoto(userId int,photo []byte,imgExt string) (bool,error)
 }
 type Tour interface{
-	AddUserTour(newTour ent.AddPoints)(bool,error)
+	AddUserTour(newTour ent.AddPoints)(int,error)
+	GetUserTours(userId int,offset int) (*[]ent.Tour, error)
+	DeleteTour(tourId int)(bool,error)
+	GetAllGuideTours(offset int)(*[]ent.Tour,error)
+	GetTourInfo(tourId int)(*ent.Tour,error)
 }
 
 type Service struct {

@@ -54,7 +54,7 @@ func (h *Handler) getAllUsers(c *gin.Context) {
 }
 
 func (h *Handler) getUsersByRole(c *gin.Context) {
-	role_id, err := strconv.Atoi(c.Param("role-id"))
+	roleId, err := strconv.Atoi(c.Param("role-id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -65,7 +65,7 @@ func (h *Handler) getUsersByRole(c *gin.Context) {
 		return
 	}
 
-	users, err := h.service.GetUsersByRole(role_id, offset)
+	users, err := h.service.GetUsersByRole(roleId, offset)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

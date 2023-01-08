@@ -36,7 +36,11 @@ type User interface{
 
 }
 type Tour interface{
-	AddUserTour(fullTour ent.Tour) (bool, error)
+	AddUserTour(fullTour ent.Tour) (int, error)
+	GetUserTours(userId int,offset int) (*[]ent.Tour, error)
+	DeleteTour(tourId int)(bool,error)
+	GetAllGuideTours(offset int)(*[]ent.Tour,error)
+	GetTourInfo(tourId int)(*ent.Tour,error)
 }
 type Repository struct {
 	Authorization
