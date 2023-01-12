@@ -26,6 +26,10 @@ type Place interface {
 
 	GetLocalTypes() (*[]ent.LocalType,error)
 	GetHouseTypes() (*[]ent.HouseType,error)
+
+	AddFavoritePlace(userId int, placeId int) (bool, error)
+	GetAllUserFavoritePlaces(userId int) (*[]interface{}, error)
+	GetCountOfPlaceFavorites(placeId int) (int, error)
 }
 type User interface{
 	GetUserByID(id int) (ent.User, error)

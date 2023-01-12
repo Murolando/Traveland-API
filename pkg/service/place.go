@@ -33,3 +33,12 @@ func (s PlaceService) GetLocalTypes() (*[]ent.LocalType,error){
 func (s PlaceService) GetHouseTypes() (*[]ent.HouseType,error){
 	return s.repo.GetHouseTypes()
 }
+func (s PlaceService) AddFavoritePlace(userId int, placeId int) (bool, error){
+	return s.repo.AddFavoritePlace(userId,placeId)
+}
+func (s PlaceService) GetAllUserFavoritePlaces(userId int) (*[]interface{}, error){
+	return s.repo.GetAllUserFavoritePlaces(userId)
+}
+func (s PlaceService) GetCountOfPlaceFavorites(placeId int) (int, error){
+	return s.repo.GetCountOfPlaceFavorites(placeId)
+}

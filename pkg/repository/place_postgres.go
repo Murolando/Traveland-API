@@ -352,3 +352,47 @@ func (r PlaceBD) getPhoto(placeId int) (string, error) {
 	}
 	return photo, nil
 }
+
+func (r PlaceBD) AddFavoritePlace(userId int, placeId int) (bool, error) {
+	query := fmt.Sprintf("INSERT INTO \"%s\" (user_id,place_id) values ($1,$2)", favoritePlaceTable)
+	_,err := r.db.Exec(query,userId,placeId)
+	if err != nil {
+		return false, err
+	}
+	return true,nil
+}
+
+func (r PlaceBD) GetAllUserFavoritePlaces(userId int) (*[]interface{}, error) {
+	query := fmt.Sprintf("SELECT place_id FROM \"%s\" WHERE user_id = $1", favoritePlaceTable)
+	var favPlaces []interface{} = make([]interface{}, 0)
+	rows,err := r.db.Query(query,userId)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next(){
+		var placeId int
+		if err := rows.Scan(&placeId); err != nil {
+			return nil, err
+		}
+		plc,err := r.GetPlaceByID(placeId)
+		if err != nil{
+			return nil, err
+		}
+		favPlaces = append(favPlaces,plc)
+	}
+	return &favPlaces,nil
+}
+
+func (r PlaceBD) GetCountOfPlaceFavorites(placeId int) (int, error) {
+	var counts int
+	query := fmt.Sprintf("SELECT COUNT(id) FROM \"%s\" WHERE place_id = $1", favoritePlaceTable)
+	row := r.db.QueryRow(query,placeId)
+	if err := row.Scan(&counts);err != nil {
+		return 0, err
+	}
+	return counts,nil
+}
+
+
+
+

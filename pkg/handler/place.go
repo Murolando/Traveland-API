@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 	"strconv"
+	"traveland/ent"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,7 +19,7 @@ func (h *Handler) getPlaceByID(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c,"place",place)
+	newResponse(c, "place", place)
 }
 
 func (h *Handler) getAllPlace(c *gin.Context) {
@@ -28,7 +29,7 @@ func (h *Handler) getAllPlace(c *gin.Context) {
 		return
 	}
 
-	offset, err  := strconv.Atoi(c.Param("offset"))
+	offset, err := strconv.Atoi(c.Param("offset"))
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -38,7 +39,7 @@ func (h *Handler) getAllPlace(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c,"places",places)
+	newResponse(c, "places", places)
 }
 func (h *Handler) getLocalByType(c *gin.Context) {
 	typeId, err := strconv.Atoi(c.Param("type-id"))
@@ -56,7 +57,7 @@ func (h *Handler) getLocalByType(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c,"locals",places)
+	newResponse(c, "locals", places)
 
 }
 
@@ -76,7 +77,7 @@ func (h *Handler) getHouseByType(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c,"houses",places)
+	newResponse(c, "houses", places)
 }
 func (h *Handler) getLocalTypes(c *gin.Context) {
 	localTypes, err := h.service.GetLocalTypes()
@@ -84,7 +85,7 @@ func (h *Handler) getLocalTypes(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c,"local-types",localTypes)
+	newResponse(c, "local-types", localTypes)
 }
 
 func (h *Handler) getHouseTypes(c *gin.Context) {
@@ -93,5 +94,46 @@ func (h *Handler) getHouseTypes(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c,"house-types",houseTypes)
+	newResponse(c, "house-types", houseTypes)
+}
+
+func (h *Handler) addFavoritePlace(c *gin.Context) {
+	var input ent.FavoritePlace
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	result,err := h.service.AddFavoritePlace(input.UserId,input.PlaceId)
+	if err!=nil{
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	newResponse(c, "", result)
+}
+func (h *Handler) getAllUserFavoritePlaces(c *gin.Context) {
+	userId, err := strconv.Atoi(c.Param("user-id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	favPlaces,err := h.service.GetAllUserFavoritePlaces(userId)
+	if err!=nil{
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	newResponse(c, "favorite-places", favPlaces)
+}
+
+func (h *Handler) getCountOfPlaceFavorites(c *gin.Context){
+	placeId, err := strconv.Atoi(c.Param("place-id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	counts,err := h.service.GetCountOfPlaceFavorites(placeId)
+	if err!=nil{
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	newResponse(c, "counts", counts)
 }

@@ -43,7 +43,10 @@ func (h *Handler) InitRountes() *gin.Engine {
 
 			place.GET("/get-local-types",h.getLocalTypes)
 			place.GET("/get-house-types",h.getHouseTypes)
-
+			
+			place.POST("/add-favorite-place/",h.addFavoritePlace)
+			place.GET("/get-all-user-favorite-places/:user-id",h.getAllUserFavoritePlaces)
+			place.GET("/get-count-of-place-favorites/:place-id",h.getCountOfPlaceFavorites)
 			
 		}
 		review := api.Group("/review")
