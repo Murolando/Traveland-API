@@ -11,7 +11,7 @@ type Review interface{
 	UpdateReview(reviewId int,rating int, reviewText string) (bool,error)
 }
 type Authorization interface {
-	CreateUser(ent.User) (int, error)
+	CreateUser(user ent.User) (map[string]interface{}, error)
 	GenerateToken(mail string, password string) (string, error, int)
 	ParseToken(token string) (int,error)
 }

@@ -44,12 +44,12 @@ func (h *Handler) signUp(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	id, err := h.service.Authorization.CreateUser(input)
+	datas, err := h.service.Authorization.CreateUser(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c, "id", id)
+	newResponse(c, "", datas)
 }
 
 type singInInput struct {

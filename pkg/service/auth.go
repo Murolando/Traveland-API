@@ -30,9 +30,18 @@ func NewAuthService(repo repository.Authorization) *AuthService {
 	}
 }
 
-func (s AuthService) CreateUser(user ent.User) (int, error) {
+func (s AuthService) CreateUser(user ent.User) (map[string]interface{}, error) {
+	realPass:=user.Password
 	user.Password = s.generateHashPassword(user.Password)
-	return s.repo.CreateUser(user)
+	mail,pass,id,err := s.repo.CreateUser(user,realPass)
+	if err!=nil{
+		return nil, err
+	}
+	token,err,_:= s.GenerateToken(mail,pass)
+	if err!=nil{
+		return nil,err
+	}
+	return map[string]interface{}{"token":token,"user-id":id},nil
 }
 
 // Для генерации  хэша пароля
