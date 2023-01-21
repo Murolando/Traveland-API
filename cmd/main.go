@@ -28,6 +28,7 @@ func main() {
 
 }
 
+// migrate -path ./db/migrations -database 'postgres://postgres:123@localhost:5437/postgres?sslmode=disable' up
 
 // migrate -path ./db/migrations -database 'postgres://postgres:123@localhost:5432/app_bd?sslmode=disable' up
 /*const (

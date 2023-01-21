@@ -29,13 +29,13 @@ func (r AuthPostgres) CreateUser(user ent.User,realPass string) (string,string,i
 		t.Hour(), t.Minute(), t.Second())
 	if user.Number != "" {
 		query := fmt.Sprintf("INSERT INTO \"%s\" (name, last_name, password_hash, numbers, role_id, sex,registration_datetime) values ($1 , $2 ,$3 ,$4, $5, $6, $7) RETURNING id", userTable)
-		row := r.db.QueryRow(query, user.Name, user.LastName, user.Password, user.Number, user.Role_id, user.Sex, user.RegisterTime)
+		row := r.db.QueryRow(query, user.Name,user.LastName, user.Password, user.Number, user.Role_id, user.Sex, user.RegisterTime)
 		if err := row.Scan(&id); err != nil {
 			return "","",0, err
 		}
 	} else {
-		query := fmt.Sprintf("INSERT INTO \"%s\" (name,last_name, password_hash, role_id, email, sex, registration_datetime) values ($1 , $2 ,$3 ,$4, $5, $6,$7) RETURNING id", userTable)
-		row := r.db.QueryRow(query, user.Name, user.LastName, user.Password, user.Role_id, user.Mail, user.Sex, user.RegisterTime)
+		query := fmt.Sprintf("INSERT INTO \"%s\" (name,password_hash, role_id, email, sex, registration_datetime) values ($1 , $2 ,$3 ,$4, $5, $6) RETURNING id", userTable)
+		row := r.db.QueryRow(query, user.Name, user.Password, user.Role_id, user.Mail, user.Sex, user.RegisterTime)
 		if err := row.Scan(&id); err != nil {
 			return "","",0, err
 		}

@@ -11,16 +11,17 @@ CREATE TABLE "user"
 (
     id                    serial PRIMARY KEY not null unique,
     name                  varchar(25) not null,
-    last_name             varchar(25) not null,
+    last_name             varchar(25),
     password_hash         varchar(255) not null,
     numbers               varchar(11) unique,
-    role_id               int references role(id) not null DEFAULT 0,
+    role_id               int references "role"(id) on delete cascade,
     email                 VARCHAR(40) unique,
     sex                   boolean NULL,
-    registration_datetime TIMESTAMP(0) NOT NULL
+    registration_datetime TIMESTAMP(0) NOT NULL,
+    image_src             varchar(200)
 );
 CREATE TABLE "house_type"
-(
+(   
     id                      serial PRIMARY KEY not null unique,
     name                    varchar(100) not null 
 );
@@ -57,6 +58,12 @@ INSERT INTO "place" (name,description,location_long,location_lat,address,numbers
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event9','jil',0.0,-1552.14,'jil','8928',FALSE,350);
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event10','jil',0.0,0.0,'jil','8928',FALSE,350);
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event11','jil',0.0,0.0,'jil','8928',TRUE,350);
+CREATE TABLE "place_src"
+(
+    id                      serial PRIMARY KEY not null unique,
+    image_src               varchar(200) not null,
+    place_id                int references "place" (id) on delete cascade not null
+);
 CREATE TABLE "favorite_place"
 (
     id                      serial PRIMARY KEY not null unique,
