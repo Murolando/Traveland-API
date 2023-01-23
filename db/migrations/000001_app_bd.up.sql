@@ -16,9 +16,9 @@ CREATE TABLE "user"
     numbers               varchar(11) unique,
     role_id               int references "role"(id) on delete cascade,
     email                 VARCHAR(40) unique,
-    sex                   boolean NULL,
+    sex                   boolean DEFAULT TRUE,
     registration_datetime TIMESTAMP(0) NOT NULL,
-    image_src             varchar(200)
+    image_src             varchar(500)
 );
 CREATE TABLE "house_type"
 (   
@@ -40,6 +40,7 @@ CREATE TABLE "place"
     mail                    VARCHAR(30),
     site_url                VARCHAR(150),
     pushkin                 boolean DEFAULT FALSE,
+    start_time              date,
     house_price             INT,
     house_type_id           int references "house_type" (id) on delete cascade,
     count_room              INT DEFAULT 0, 
@@ -61,7 +62,7 @@ INSERT INTO "place" (name,description,location_long,location_lat,address,numbers
 CREATE TABLE "place_src"
 (
     id                      serial PRIMARY KEY not null unique,
-    image_src               varchar(200) not null,
+    image_src               varchar(500) not null,
     place_id                int references "place" (id) on delete cascade not null
 );
 CREATE TABLE "favorite_place"
@@ -117,7 +118,7 @@ CREATE TABLE "user_achieve"
 (
     id                      serial PRIMARY KEY not null unique,
     user_id                 int references "user" (id) on delete cascade not null,
-    achieve                 int references "achieve"(id) on delete cascade not null
+    achieve_id                 int references "achieve"(id) on delete cascade not null
 );
 CREATE TABLE "dayy"
 (
@@ -136,7 +137,7 @@ CREATE TABLE "week"
 (
     id                      serial PRIMARY KEY  not null unique,
     place_id                int references "place" (id) on delete cascade not null,
-    day_id                  int references "dayy"(id) on delete cascade not null,
+    day_id                  int references "dayy"(id) on delete cascade not null unique,
     start_work              time,
     end_work                time,
     start_timeout           time,
