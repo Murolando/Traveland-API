@@ -2,7 +2,6 @@ package handler
 
 import (
 	// "strconv"
-	// "io/ioutil"
 	"net/http"
 	"traveland/ent"
 
@@ -59,14 +58,20 @@ type singInInput struct {
 
 func (h *Handler) signIn(c *gin.Context) {
 	var input ent.User
+
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	token, err, userId := h.service.Authorization.GenerateToken(input.Mail, input.Password)
+	id, err := h.service.SignIn(input.Mail, input.Password)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c, "", map[string]interface{}{"token": token, "user-id": userId})
+	token, err := h.service.Authorization.GenerateToken(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	newResponse(c, "", map[string]interface{}{"token": token})
 }

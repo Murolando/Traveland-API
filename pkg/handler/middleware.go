@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -23,11 +24,12 @@ func (h *Handler) userIdentity(c *gin.Context) {
 		newErrorResponse(c, http.StatusUnauthorized, "invalid auth header")
 		return
 	}
-	
+
 	userId, err := h.service.Authorization.ParseToken(headerParts[1])
-	if err != nil {
+	if err != nil || userId == 0{
 		newErrorResponse(c, http.StatusUnauthorized, err.Error())
 		return
 	}
+	fmt.Println(userId)
 	c.Set("userId", userId)
 }

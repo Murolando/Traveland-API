@@ -31,11 +31,12 @@ func (h *Handler) updateUser(c *gin.Context) {
 
 }
 func (h *Handler) getUserByID(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	numId, ok := c.Get("userId")
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "userCtx not found")
 		return
 	}
+	id := numId.(int)
 	user, err := h.service.GetUserByID(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -77,7 +78,7 @@ func (h *Handler) getUsersByRole(c *gin.Context) {
 func (h *Handler) addPhoto(c *gin.Context) {
 
 	// form reader
-	userId,_ := strconv.Atoi(c.PostForm("user-id"))
+	userId,_ := strconv.Atoi(c.PostForm("userd"))
 
 	form, _ := c.MultipartForm()
 	// filename

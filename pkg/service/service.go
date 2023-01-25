@@ -12,7 +12,8 @@ type Review interface{
 }
 type Authorization interface {
 	CreateUser(user ent.User) (map[string]interface{}, error)
-	GenerateToken(mail string, password string) (string, error, int)
+	SignIn(mail string,password string)(int,error)
+	GenerateToken(id int) (string,error)
 	ParseToken(token string) (int,error)
 }
 

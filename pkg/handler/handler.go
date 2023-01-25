@@ -26,15 +26,13 @@ func (h *Handler) InitRountes() *gin.Engine {
 		auth.POST("/sign-in", h.signIn)
 	}
 
-	api := router.Group("/api", h.userIdentity)
+	api := router.Group("/api",h.userIdentity)
 	{
 		place := api.Group("/place")
 		{
 			// place.POST("/add-place/", h.addPlace)
 			// place.DELETE("/delete-place/:id", h.deltePlace)
 			// place.PUT("/update-place/:id", h.updatePlace)
-
-			
 			place.GET("/get-place/:id", h.getPlaceByID)
 			place.GET("/get-all-place/:place-ind/:offset", h.getAllPlace)
 
@@ -66,7 +64,7 @@ func (h *Handler) InitRountes() *gin.Engine {
 			// user.POST("/add-photo/",h.addPhoto)
 
 			user.POST("/update-user/", h.updateUser)
-			user.GET("/get-user/:id", h.getUserByID)
+			user.GET("/get-user/", h.getUserByID)
 			user.GET("/get-all-users/", h.getAllUsers)
 			user.GET("/get-users-by-role/:role-id/:offset", h.getUsersByRole)
 		}

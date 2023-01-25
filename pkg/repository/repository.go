@@ -12,7 +12,7 @@ type Review interface{
 	UpdateReview(reviewId int,rating int, reviewText string) (bool,error)
 }
 type Authorization interface {
-	CreateUser(user ent.User,realPass string) (string,string,int, error)
+	CreateUser(user ent.User,realPass string) (int, error)
 	GetUserByMailAndPassword(mail string , password string)(int, error)
 	
 }

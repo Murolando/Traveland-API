@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
+	"strconv"
 	"time"
 	"traveland/ent"
 	"traveland/pkg/repository"
@@ -21,7 +22,6 @@ type AuthService struct {
 
 type tokenClaims struct {
 	jwt.StandardClaims
-	userId int `json:"user_id"`
 }
 
 func NewAuthService(repo repository.Authorization) *AuthService {
@@ -31,17 +31,26 @@ func NewAuthService(repo repository.Authorization) *AuthService {
 }
 
 func (s AuthService) CreateUser(user ent.User) (map[string]interface{}, error) {
-	realPass:=user.Password
+	realPass := user.Password
 	user.Password = s.generateHashPassword(user.Password)
-	mail,pass,id,err := s.repo.CreateUser(user,realPass)
-	if err!=nil{
+	id, err := s.repo.CreateUser(user, realPass)
+	if err != nil {
 		return nil, err
 	}
-	token,err,_:= s.GenerateToken(mail,pass)
-	if err!=nil{
-		return nil,err
+	token, err := s.GenerateToken(id)
+	if err != nil {
+		return nil, err
 	}
-	return map[string]interface{}{"token":token,"user-id":id},nil
+	return map[string]interface{}{"token": token, "user-id": id}, nil
+}
+func (s AuthService) SignIn(mail string, password string) (int, error) {
+	password = s.generateHashPassword(password)
+	id, err := s.repo.GetUserByMailAndPassword(mail, password)
+	if err != nil {
+		return 0, err
+	}
+	return id, nil
+
 }
 
 // Для генерации  хэша пароля
@@ -52,27 +61,20 @@ func (s AuthService) generateHashPassword(password string) string {
 }
 
 // Для генерации jwt токена
-func (s AuthService) GenerateToken(mail string, password string) (string, error, int) {
-	userId, err := s.repo.GetUserByMailAndPassword(mail, s.generateHashPassword(password))
-	if err != nil {
-		if userId == -1{
-			return "", fmt.Errorf("wrong password"),0
-		}
-		return "", err,0
-	}
-
+func (s AuthService) GenerateToken(id int) (string, error) {
+	fmt.Println(id)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(), 
+			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
 			IssuedAt:  time.Now().Unix(),
+			Subject:   strconv.Itoa(id),
 		},
-		userId: userId,
 	})
-	str,err := token.SignedString([]byte(signInKey))
-	return str ,err,userId
+	str, err := token.SignedString([]byte(signInKey))
+	return str, err
 }
 
-// Сам хз как это работаети устроено !
+// Распарсивает jwt токен, для проверки его валидности
 func (s AuthService) ParseToken(accesstoken string) (int, error) {
 	token, err := jwt.ParseWithClaims(accesstoken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -83,8 +85,13 @@ func (s AuthService) ParseToken(accesstoken string) (int, error) {
 	if err != nil {
 		return 0, err
 	}
+	fmt.Println(124)
 	if claims, ok := token.Claims.(*tokenClaims); ok && token.Valid {
-		return claims.userId, nil
+		id,err:=strconv.Atoi(claims.Subject)
+		if err!=nil{
+			return 0, errors.New("Troubles with convert string to int")
+		}
+		return id, nil
 	}
 	return 0, errors.New("token claims are not of type *tokenClaims")
 }
