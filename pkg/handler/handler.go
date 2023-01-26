@@ -74,7 +74,7 @@ func (h *Handler) InitRountes() *gin.Engine {
 			user.GET("/get-all-users", h.getAllUsers)
 			user.GET("/get-users-by-role/:role-id/:offset", h.getUsersByRole)
 		}
-		tour := api.Group("/tour")
+		tour := api.Group("/tour",h.userIdentity)
 		{
 
 			tour.POST("/add-user-tour/",h.addUserTour)
