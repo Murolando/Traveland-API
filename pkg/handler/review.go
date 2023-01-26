@@ -14,6 +14,13 @@ func (h *Handler) addReview(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
+	numId, ok := c.Get("userId")
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "userCtx not found")
+		return
+	}
+	userId := numId.(int)
+	input.UserId = userId
 	id, err := h.service.Review.AddReview(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -27,7 +34,13 @@ func (h *Handler) delteReview(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	t,err := h.service.Review.DeleteReview(id)
+	numId, ok := c.Get("userId")
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "userCtx not found")
+		return
+	}
+	userId := numId.(int)
+	t,err := h.service.Review.DeleteReview(id,userId)
 	if err != nil{
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

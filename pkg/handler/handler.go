@@ -26,7 +26,7 @@ func (h *Handler) InitRountes() *gin.Engine {
 		auth.POST("/sign-in", h.signIn)
 	}
 
-	api := router.Group("/api",h.userIdentity)
+	api := router.Group("/api")
 	{
 		place := api.Group("/place")
 		{
@@ -41,30 +41,37 @@ func (h *Handler) InitRountes() *gin.Engine {
 
 			place.GET("/get-count-of-place-favorites/:place-id",h.getCountOfPlaceFavorites)
 			
-
-			place.POST("/add-favorite-place/",h.addFavoritePlace)
-			place.GET("/get-all-user-favorite-places/:user-id",h.getAllUserFavoritePlaces)
+			authPlace := place.Group("/",h.userIdentity)
+			{
+				authPlace.POST("/add-favorite-place/",h.addFavoritePlace)
+				authPlace.GET("/get-all-user-favorite-places",h.getAllUserFavoritePlaces)
+			}
+			
 			
 		}
 		review := api.Group("/review")
 		{
-			review.POST("/add-review/", h.addReview)
-			review.DELETE("/delete-review/:id", h.delteReview)
+			authReview := review.Group("/",h.userIdentity)
+			{
+				authReview.POST("/add-review/", h.addReview)
+				authReview.DELETE("/delete-review/:id", h.delteReview)
+			}
 			review.GET("/get-all-reviews/:place-id/:guide-id/:offset",h.getAllReview)
 
 			// review.PUT("/update-review", h.updateReview)		
 			
 		}
-		user := api.Group("/user")
+		user := api.Group("/user",h.userIdentity)
 		{
 			// user.POST("/add-user", h.addUser)
 			// user.DELETE("/delete-user/:id", h.delteUser)
 
 			// user.POST("/add-photo/",h.addPhoto)
 
-			user.POST("/update-user/", h.updateUser)
-			user.GET("/get-user/", h.getUserByID)
-			user.GET("/get-all-users/", h.getAllUsers)
+			user.DELETE("/delete-user", h.deleteUser)
+			user.POST("/update-user", h.updateUser)
+			user.GET("/get-user", h.getUserByID)
+			user.GET("/get-all-users", h.getAllUsers)
 			user.GET("/get-users-by-role/:role-id/:offset", h.getUsersByRole)
 		}
 		tour := api.Group("/tour")

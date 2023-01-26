@@ -87,6 +87,21 @@ func (r UserBD) UpdateUserInfo(user ent.User) (bool, error) {
 	}
 	return true, nil
 }
+func (r UserBD) DeleteUser(userId int) (bool, error) {
+	query := fmt.Sprintf(`DELETE FROM "%s" WHERE id = $1`, userTable)
+	res, err := r.db.Exec(query,userId)
+	if err!=nil{
+		return false,err
+	}
+	count, err := res.RowsAffected()
+    if err != nil {
+        return false,err
+    }
+	if count != 0{
+		return true,nil
+	}
+	return false,nil
+}
 
 func (r UserBD) getPhoto(userId int) (string, error) {
 	var photo string

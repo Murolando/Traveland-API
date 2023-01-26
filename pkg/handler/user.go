@@ -13,8 +13,24 @@ import (
 func (h *Handler) addUser(c *gin.Context) {
 }
 
-func (h *Handler) delteUser(c *gin.Context) {
-
+func (h *Handler) deleteUser(c *gin.Context) {
+	numId, ok := c.Get("userId")
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "userCtx not found")
+		return
+	}
+	id := numId.(int)
+	t,err := h.service.User.DeleteUser(id)
+	if err != nil{
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	if t == true{
+		newResponse(c, "", true)
+	}else{
+		newErrorResponse(c, http.StatusInternalServerError,"records are missing")
+		return
+	}
 }
 func (h *Handler) updateUser(c *gin.Context) {
 	var input ent.User
@@ -22,6 +38,13 @@ func (h *Handler) updateUser(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
+	numId, ok := c.Get("userId")
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "userCtx not found")
+		return
+	}
+	id := numId.(int)
+	input.UserId = id
 	end, err := h.service.User.UpdateUserInfo(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())

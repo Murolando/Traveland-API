@@ -103,6 +103,13 @@ func (h *Handler) addFavoritePlace(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
+	numId, ok := c.Get("userId")
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "userCtx not found")
+		return
+	}
+	id := numId.(int)
+	input.UserId = id
 	result,err := h.service.AddFavoritePlace(input.UserId,input.PlaceId)
 	if err!=nil{
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -111,12 +118,13 @@ func (h *Handler) addFavoritePlace(c *gin.Context) {
 	newResponse(c, "", result)
 }
 func (h *Handler) getAllUserFavoritePlaces(c *gin.Context) {
-	userId, err := strconv.Atoi(c.Param("user-id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	numId, ok := c.Get("userId")
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "userCtx not found")
 		return
 	}
-	favPlaces,err := h.service.GetAllUserFavoritePlaces(userId)
+	id := numId.(int)
+	favPlaces,err := h.service.GetAllUserFavoritePlaces(id)
 	if err!=nil{
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

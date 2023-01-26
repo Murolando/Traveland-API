@@ -17,8 +17,8 @@ func NewReviewService(repo repository.Review)*ReviewService{
 func (s *ReviewService) AddReview(review ent.Review) (int,error){
 	return s.repo.AddReview(review)
 }
-func (s *ReviewService) DeleteReview(id int)(bool,error){
-	return s.repo.DeleteReview(id)
+func (s *ReviewService) DeleteReview(id int,userId int)(bool,error){
+	return s.repo.DeleteReview(id,userId)
 }
 func (s *ReviewService) GetAllReview(placeId int,guideId int, offset int)([]ent.Review,error){
 	return s.repo.GetAllReview(placeId,guideId,offset)

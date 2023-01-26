@@ -40,9 +40,9 @@ func (r ReviewBD) AddReview(review ent.Review) (int, error) {
 	return id, nil
 }
 
-func (r ReviewBD) DeleteReview(id int)(bool,error){
-	query := fmt.Sprintf(`DELETE FROM "%s" WHERE id = $1`,reviewTable)
-	res1,err := r.db.Exec(query,id)
+func (r ReviewBD) DeleteReview(id int,userId int)(bool,error){
+	query := fmt.Sprintf(`DELETE FROM "%s" WHERE id = $1 AND user_id = $2`,reviewTable)
+	res1,err := r.db.Exec(query,id,userId)
 	if err!=nil{
 		return false,err
 	}
