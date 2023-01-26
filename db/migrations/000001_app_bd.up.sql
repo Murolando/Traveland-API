@@ -19,6 +19,8 @@ CREATE TABLE "user"
     sex                   boolean DEFAULT TRUE,
     registration_datetime TIMESTAMP(0) NOT NULL,
     image_src             varchar(500)
+    -- refresh_token         varchar(100) not null,
+    -- expired_at            timestamp not null
 );
 CREATE TABLE "house_type"
 (   

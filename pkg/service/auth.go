@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
+	"math/rand"
 	"strconv"
 	"time"
 	"traveland/ent"
@@ -14,6 +15,7 @@ import (
 
 const (
 	signInKey = "as8129ru129fijwi9hahg7"
+	refreshTokenTime = 30 * 24
 )
 
 type AuthService struct {
@@ -31,9 +33,17 @@ func NewAuthService(repo repository.Authorization) *AuthService {
 }
 
 func (s AuthService) CreateUser(user ent.User) (map[string]interface{}, error) {
-	realPass := user.Password
 	user.Password = s.generateHashPassword(user.Password)
-	id, err := s.repo.CreateUser(user, realPass)
+
+	// ses,err := s.NewRefreshToken()
+	// if err!=nil{
+	// 	return nil, err
+	// }
+	
+	// user.Session.RefreshToken = ses
+	// user.Session.ExpiredAt = time.Now().Add(refreshTokenTime*time.Hour).Unix()
+
+	id, err := s.repo.CreateUser(user)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +51,7 @@ func (s AuthService) CreateUser(user ent.User) (map[string]interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	return map[string]interface{}{"token": token, "user-id": id}, nil
+	return map[string]interface{}{"token": token}, nil
 }
 func (s AuthService) SignIn(mail string, password string) (int, error) {
 	password = s.generateHashPassword(password)
@@ -62,7 +72,6 @@ func (s AuthService) generateHashPassword(password string) string {
 
 // Для генерации jwt токена
 func (s AuthService) GenerateToken(id int) (string, error) {
-	fmt.Println(id)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
@@ -85,7 +94,6 @@ func (s AuthService) ParseToken(accesstoken string) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	fmt.Println(124)
 	if claims, ok := token.Claims.(*tokenClaims); ok && token.Valid {
 		id,err:=strconv.Atoi(claims.Subject)
 		if err!=nil{
@@ -94,4 +102,17 @@ func (s AuthService) ParseToken(accesstoken string) (int, error) {
 		return id, nil
 	}
 	return 0, errors.New("token claims are not of type *tokenClaims")
+}
+
+// refresh token
+func (s AuthService) NewRefreshToken()(string,error){
+	b := make([]byte,32)
+	ss := rand.NewSource(time.Now().Unix())
+	r := rand.New(ss)
+
+	_,err := r.Read(b)
+	if err!=nil{
+		return "",err
+	}
+	return fmt.Sprintf("%x",b), nil
 }

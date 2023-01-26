@@ -30,9 +30,6 @@ func (h *Handler) InitRountes() *gin.Engine {
 	{
 		place := api.Group("/place")
 		{
-			// place.POST("/add-place/", h.addPlace)
-			// place.DELETE("/delete-place/:id", h.deltePlace)
-			// place.PUT("/update-place/:id", h.updatePlace)
 			place.GET("/get-place/:id", h.getPlaceByID)
 			place.GET("/get-all-place/:place-ind/:offset", h.getAllPlace)
 
@@ -41,10 +38,12 @@ func (h *Handler) InitRountes() *gin.Engine {
 
 			place.GET("/get-local-types",h.getLocalTypes)
 			place.GET("/get-house-types",h.getHouseTypes)
+
+			place.GET("/get-count-of-place-favorites/:place-id",h.getCountOfPlaceFavorites)
 			
+
 			place.POST("/add-favorite-place/",h.addFavoritePlace)
 			place.GET("/get-all-user-favorite-places/:user-id",h.getAllUserFavoritePlaces)
-			place.GET("/get-count-of-place-favorites/:place-id",h.getCountOfPlaceFavorites)
 			
 		}
 		review := api.Group("/review")

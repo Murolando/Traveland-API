@@ -21,7 +21,7 @@ func NewAuthPostgres(db *sqlx.DB) *AuthPostgres {
 	}
 }
 
-func (r AuthPostgres) CreateUser(user ent.User,realPass string) (int, error) {
+func (r AuthPostgres) CreateUser(user ent.User) (int, error) {
 	var id int
 	t := time.Now()
 	user.RegisterTime = fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d\n",
