@@ -28,7 +28,6 @@ func NewPlaceBD(db *sqlx.DB) *PlaceBD {
 
 func (r PlaceBD) sortByOrder(srtBy string, srtOrder string) string {
 	query := fmt.Sprintf(`ORDER BY %s %s `, srtBy, srtOrder)
-	fmt.Println(query)
 	return query
 }
 
@@ -220,7 +219,6 @@ func (r PlaceBD) getAllLocations(params *ent.PlaceQueryParams) (*[]ent.Location,
 	r.sortByOrder(params.SortBy, params.SortOrder)+
 	`LIMIT $3
 	OFFSET $4`, placeTable, placeTypeTable)
-	fmt.Println(query)
 	rows, err := r.db.Query(query, 2, 1, params.Limit,params.Offset)
 	if err != nil {
 		return nil, err

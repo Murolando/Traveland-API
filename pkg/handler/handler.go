@@ -28,20 +28,24 @@ func (h *Handler) InitRountes() *gin.Engine {
 
 	api := router.Group("/api")
 	{
-		place := api.Group("/place",h.placeQueryParametrs)
+		place := api.Group("/place")
 		{
 			place.GET("/get-place/:id", h.getPlaceByID)
-			place.GET("/get-all-place/:place-ind/:offset", h.getAllPlace)
 
-			place.GET("/get-place-by-type/:type-id/:offset", h.getLocalByType)
-			place.GET("/get-house-by-type/:type-id/:offset", h.getHouseByType)
+			queryParams := place.Group("/",h.placeQueryParametrs)
+			{
+				queryParams.GET("/get-all-place/:place-ind/:offset", h.getAllPlace)
+			}
+			// place.GET("/get-place-by-type/:type-id/:offset", h.getLocalByType)
+			// place.GET("/get-house-by-type/:type-id/:offset", h.getHouseByType)
 
 			place.GET("/get-local-types",h.getLocalTypes)
 			place.GET("/get-house-types",h.getHouseTypes)
 
+
 			place.GET("/get-count-of-place-favorites/:place-id",h.getCountOfPlaceFavorites)
 			
-			authPlace := place.Group("/",h.userIdentity)
+			authPlace := place.Group("/",h.userIdentity,h.placeQueryParametrs)
 			{
 				authPlace.POST("/add-favorite-place/",h.addFavoritePlace)
 				authPlace.GET("/get-all-user-favorite-places",h.getAllUserFavoritePlaces)
