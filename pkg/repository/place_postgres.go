@@ -135,7 +135,6 @@ func (r PlaceBD) GetAllPlaces(placeInd int, params *ent.PlaceQueryParams) (inter
 	}
 
 }
-
 func (r PlaceBD) getAllHousing(params *ent.PlaceQueryParams) (*[]ent.Housing, error) {
 	houses := make([]ent.Housing, 0)
 	query := fmt.Sprintf(`SELECT place.id,place.name,place.location_long,place.location_lat,place.address,place.house_price,place.house_type_id,
@@ -233,6 +232,9 @@ func (r PlaceBD) getAllLocations(params *ent.PlaceQueryParams) (*[]ent.Location,
 	}
 	return &locations, nil
 }
+
+
+
 
 func (r PlaceBD) GetLocalByType(placeType int, offset int) (*[]ent.Location, error) {
 	places := make([]ent.Location, 0)

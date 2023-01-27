@@ -45,7 +45,7 @@ func (h *Handler) InitRountes() *gin.Engine {
 
 			place.GET("/get-count-of-place-favorites/:place-id",h.getCountOfPlaceFavorites)
 			
-			authPlace := place.Group("/",h.userIdentity,h.placeQueryParametrs)
+			authPlace := place.Group("/",h.userIdentity)
 			{
 				authPlace.POST("/add-favorite-place/",h.addFavoritePlace)
 				authPlace.GET("/get-all-user-favorite-places",h.getAllUserFavoritePlaces)
