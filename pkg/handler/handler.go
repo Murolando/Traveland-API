@@ -34,7 +34,7 @@ func (h *Handler) InitRountes() *gin.Engine {
 
 			queryParams := place.Group("/",h.placeQueryParametrs)
 			{
-				queryParams.GET("/get-all-place/:place-ind/:offset", h.getAllPlace)
+				queryParams.GET("/get-all-place/:place-ind", h.getAllPlace)
 			}
 			// place.GET("/get-place-by-type/:type-id/:offset", h.getLocalByType)
 			// place.GET("/get-house-by-type/:type-id/:offset", h.getHouseByType)

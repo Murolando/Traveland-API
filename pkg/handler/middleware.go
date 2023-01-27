@@ -38,10 +38,11 @@ func (h *Handler) userIdentity(c *gin.Context) {
 
 // sort_by = str  name, price, avg_rating, rating_count
 // sort_order = str asc,desc
-// offset = int
-// limit = int
-// place_type_id = int
-// house_type_id = int
+// offset = int 0...n
+// limit = int	0...n
+// place_type_id = int (3...n)
+// house_type_id = int (1...n)
+
 
 func (h *Handler) placeQueryParametrs(c *gin.Context) {
 	queryParams := c.Request.URL.Query()
