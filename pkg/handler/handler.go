@@ -28,7 +28,7 @@ func (h *Handler) InitRountes() *gin.Engine {
 
 	api := router.Group("/api")
 	{
-		place := api.Group("/place")
+		place := api.Group("/place",h.placeQueryParametrs)
 		{
 			place.GET("/get-place/:id", h.getPlaceByID)
 			place.GET("/get-all-place/:place-ind/:offset", h.getAllPlace)
@@ -71,7 +71,10 @@ func (h *Handler) InitRountes() *gin.Engine {
 			user.DELETE("/delete-user", h.deleteUser)
 			user.POST("/update-user", h.updateUser)
 			user.GET("/get-user", h.getUserByID)
+			
 			user.GET("/get-all-users", h.getAllUsers)
+
+
 			user.GET("/get-users-by-role/:role-id/:offset", h.getUsersByRole)
 		}
 		tour := api.Group("/tour",h.userIdentity)

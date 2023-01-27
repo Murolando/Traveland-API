@@ -14,6 +14,7 @@ func (h *Handler) getPlaceByID(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
+	
 	place, err := h.service.GetPlaceByID(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -23,24 +24,30 @@ func (h *Handler) getPlaceByID(c *gin.Context) {
 }
 
 func (h *Handler) getAllPlace(c *gin.Context) {
+	// place category
 	id, err := strconv.Atoi(c.Param("place-ind"))
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-
-	offset, err := strconv.Atoi(c.Param("offset"))
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	// query params
+	params,ok :=c.Keys["placeQueryParams"].(*ent.PlaceQueryParams)
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "placeQueryParams not found")
 		return
 	}
-	places, err := h.service.GetAllPlaces(id, offset)
+	// Костылек)
+	if (id == 1 && params.SortBy == "min_price"){
+		params.SortBy = "house_price"
+	}
+	places, err := h.service.GetAllPlaces(id, params)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	newResponse(c, "places", places)
 }
+
 func (h *Handler) getLocalByType(c *gin.Context) {
 	typeId, err := strconv.Atoi(c.Param("type-id"))
 	if err != nil {
@@ -110,8 +117,8 @@ func (h *Handler) addFavoritePlace(c *gin.Context) {
 	}
 	id := numId.(int)
 	input.UserId = id
-	result,err := h.service.AddFavoritePlace(input.UserId,input.PlaceId)
-	if err!=nil{
+	result, err := h.service.AddFavoritePlace(input.UserId, input.PlaceId)
+	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -124,22 +131,22 @@ func (h *Handler) getAllUserFavoritePlaces(c *gin.Context) {
 		return
 	}
 	id := numId.(int)
-	favPlaces,err := h.service.GetAllUserFavoritePlaces(id)
-	if err!=nil{
+	favPlaces, err := h.service.GetAllUserFavoritePlaces(id)
+	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	newResponse(c, "favorite-places", favPlaces)
 }
 
-func (h *Handler) getCountOfPlaceFavorites(c *gin.Context){
+func (h *Handler) getCountOfPlaceFavorites(c *gin.Context) {
 	placeId, err := strconv.Atoi(c.Param("place-id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	counts,err := h.service.GetCountOfPlaceFavorites(placeId)
-	if err!=nil{
+	counts, err := h.service.GetCountOfPlaceFavorites(placeId)
+	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}

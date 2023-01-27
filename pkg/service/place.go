@@ -18,8 +18,8 @@ func NewPlaceService(repo repository.Place) *PlaceService {
 func (s PlaceService) GetPlaceByID(id int) (interface{}, error) {
 	return s.repo.GetPlaceByID(id)
 }
-func (s PlaceService) GetAllPlaces(placeInd int, offset int) (interface{}, error) {
-	return s.repo.GetAllPlaces(placeInd, offset)
+func (s PlaceService) GetAllPlaces(placeInd int, params *ent.PlaceQueryParams) (interface{}, error) {
+	return s.repo.GetAllPlaces(placeInd,params)
 }
 func (s PlaceService) GetLocalByType(placeType int, offset int) (*[]ent.Location, error){
 	return s.repo.GetLocalByType(placeType,offset)

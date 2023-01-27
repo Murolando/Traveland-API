@@ -27,7 +27,7 @@ func (r AuthPostgres) CreateUser(user ent.User) (int, error) {
 	user.RegisterTime = fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d\n",
 		t.Year(), t.Month(), t.Day(),
 		t.Hour(), t.Minute(), t.Second())
-	if user.Number != "" {
+	if user.Number.String != "" {
 		query := fmt.Sprintf("INSERT INTO \"%s\" (name, last_name, password_hash, numbers, role_id, sex,registration_datetime) values ($1 , $2 ,$3 ,$4, $5, $6, $7) RETURNING id", userTable)
 		row := r.db.QueryRow(query, user.Name,user.LastName, user.Password, user.Number, user.Role_id, user.Sex, user.RegisterTime)
 		if err := row.Scan(&id); err != nil {
