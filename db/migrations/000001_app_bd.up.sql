@@ -142,6 +142,8 @@ CREATE TABLE "week"
     end_timeout             time 
 );
 
+INSERT INTO "week" (place_id,day_id,start_work,end_work) values(1,2,'12:00:00','16:00:00'); 
+INSERT INTO "week" (place_id,day_id,start_work,end_work) values(1,3,'12:00:00','16:00:00'); 
 CREATE TABLE "tour"
 (
     id                      serial PRIMARY KEY  not null unique,
