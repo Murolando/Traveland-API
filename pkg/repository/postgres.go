@@ -21,6 +21,7 @@ const (
 	dayyTable = "dayy"
 	tourTable = "tour"
 	tourPlaceTable = "tour_place"
+	placeSrcTable = "place_src"
 )
 
 const (

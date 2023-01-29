@@ -15,10 +15,22 @@ type Place struct {
 	Url            sql.NullString  `json:"url"`
 	NumberOfRating sql.NullInt32   `json:"number-of-rating"`
 	MeanRating     sql.NullFloat64 `json:"mean-rating"`
-	// Photos			[]string			`json:"photos"`
+	Photos         []string        `json:"photos"`
+	Shedule        Shedule         `json:"shedule"`
 }
 
 type FavoritePlace struct {
 	PlaceId int `json:"place-id"`
 	UserId  int `json:"user-id"`
+}
+
+type PlaceCard struct {
+	PlaceId        int             `json:"place-id"`
+	Name           string          `json:"name"`
+	Latitude       sql.NullFloat64 `json:"latitude"`
+	Longitude      sql.NullFloat64 `json:"longitude"`
+	Adress         string          `json:"adress"`
+	NumberOfRating sql.NullInt32   `json:"number-of-rating"`
+	MeanRating     sql.NullFloat64 `json:"mean-rating"`
+	Photo          sql.NullString  `json:"photo"`
 }
