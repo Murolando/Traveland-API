@@ -176,3 +176,28 @@ func (h *Handler) reviewQueryParams(c *gin.Context){
 	}
 	c.Set("reviewQueryParams", &reviewQuery)
 }
+
+func (h *Handler) tourQueryParams(c *gin.Context){
+	queryParams := c.Request.URL.Query()
+	tourQuery := ent.TourQueryParams{
+		Offset: 0,
+		Limit: 20,
+	}
+	if queryParams["offset"] != nil{
+		offset,err := strconv.Atoi(queryParams["offset"][0])
+		if err!=nil{
+			newErrorResponse(c, http.StatusUnauthorized, "bad offset type")
+			return
+		}
+		tourQuery.Offset = offset
+	}
+	if queryParams["limit"] != nil{
+		limit,err := strconv.Atoi(queryParams["limit"][0])
+		if err!=nil{
+			newErrorResponse(c, http.StatusUnauthorized, "bad limit type")
+			return
+		}
+		tourQuery.Limit = limit
+	}
+	c.Set("tourQueryParams", &tourQuery)
+}

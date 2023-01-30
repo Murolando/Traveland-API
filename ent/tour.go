@@ -6,6 +6,7 @@ type Tour struct {
 	TourId      int            `json:"tour-id"`
 	UserId      int            `json:"user-id"`
 	Name        sql.NullString `json:"name"`
+	Price		sql.NullInt32  `json:"price"`
 	Description sql.NullString `json:"description"`
 	Points      []Point        `json:"points"`
 }

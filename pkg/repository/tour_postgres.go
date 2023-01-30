@@ -47,11 +47,11 @@ func (r TourBD) AddUserTour(fullTour ent.Tour) (int, error) {
 	return tourId, nil
 }
 
-func (r TourBD) GetUserTours(userId int,offset int) (*[]ent.Tour, error) {
+func (r TourBD) GetUserTours(userId int,params *ent.TourQueryParams) (*[]ent.Tour, error) {
 	// get tours 
 	var tours []ent.Tour = make([]ent.Tour, 0)
 	query := fmt.Sprintf("SELECT (id) FROM \"%s\" WHERE user_id = $1 LIMIT $2 OFFSET $3", tourTable)
-	rows, err := r.db.Query(query, userId, limit, offset)
+	rows, err := r.db.Query(query, userId, params.Limit, params.Offset)
 	if err != nil {
 		return nil, err
 	}
@@ -62,9 +62,9 @@ func (r TourBD) GetUserTours(userId int,offset int) (*[]ent.Tour, error) {
 		}
 		tour.UserId = userId
 
-		query := fmt.Sprintf("SELECT place_id,start_tour,end_tour FROM \"%s\" WHERE tour_id = $1 LIMIT $2 OFFSET $3", tourPlaceTable)
+		query := fmt.Sprintf("SELECT place_id,start_tour,end_tour FROM \"%s\" WHERE tour_id = $1 ", tourPlaceTable)
 		
-		pointRows, err := r.db.Query(query, tour.TourId, limit, offset)
+		pointRows, err := r.db.Query(query, tour.TourId)
 		if err != nil {
 			return nil, err
 		}
@@ -83,9 +83,9 @@ func (r TourBD) GetUserTours(userId int,offset int) (*[]ent.Tour, error) {
 	return  &tours,nil
 }
 
-func (r TourBD) DeleteTour(tourId int)(bool,error){
-	query := fmt.Sprintf(`DELETE FROM "%s" WHERE id = $1`,tourTable)
-	res1,err := r.db.Exec(query,tourId)
+func (r TourBD) DeleteTour(tourId int,userId int)(bool,error){
+	query := fmt.Sprintf(`DELETE FROM "%s" WHERE id = $1 AND user_id = $2`,tourTable)
+	res1,err := r.db.Exec(query,tourId,userId)
 	if err!=nil{
 		return false,err
 	}
@@ -99,10 +99,10 @@ func (r TourBD) DeleteTour(tourId int)(bool,error){
 	return false,nil
 }
 
-func (r TourBD) GetAllGuideTours(offset int)(*[]ent.Tour,error){
+func (r TourBD) GetAllGuideTours(params *ent.TourQueryParams)(*[]ent.Tour,error){
 	var tours []ent.Tour = make([]ent.Tour, 0)
 	query := fmt.Sprintf(`SELECT id,name,description,user_id FROM %s WHERE name IS NOT NULL LIMIT $1 OFFSET $2`, tourTable)
-	rows, err := r.db.Query(query, limit, offset)
+	rows, err := r.db.Query(query, params.Limit, params.Offset)
 	if err != nil {
 		return nil, err
 	}
@@ -153,5 +153,6 @@ func (r TourBD) GetTourInfo(tourId int)(*ent.Tour,error){
 		}
 		points = append(points,point)
 	}
+	tour.Points = points
 	return  &tour,nil
 }

@@ -14,6 +14,14 @@ func (h *Handler) addUserTour(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
+	numId, ok := c.Get("userId")
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "userCtx not found")
+		return
+	}
+	id := numId.(int)
+	input.UserId = id
+
 	result, err := h.service.Tour.AddUserTour(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -26,17 +34,19 @@ func (h *Handler) addUserTour(c *gin.Context) {
 	newResponse(c, "tour-id", result)
 }
 func (h *Handler) getAllUserTours(c *gin.Context) {
-	userId, err := strconv.Atoi(c.Param("user-id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+	numId, ok := c.Get("userId")
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "userCtx not found")
 		return
 	}
-	offset, err := strconv.Atoi(c.Param("offset"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+	userId := numId.(int)
+	params,ok :=c.Keys["tourQueryParams"].(*ent.TourQueryParams)
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "reviewQueryParams not found")
 		return
 	}
-	tours,err := h.service.Tour.GetUserTours(userId,offset)
+
+	tours,err := h.service.Tour.GetUserTours(userId,params)
 	if err!=nil{
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -44,12 +54,18 @@ func (h *Handler) getAllUserTours(c *gin.Context) {
 	newResponse(c, "tours", tours)
 }
 func (h *Handler) deleteUserTour(c *gin.Context) {
+	numId, ok := c.Get("userId")
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "userCtx not found")
+		return
+	}
+	userId := numId.(int)
 	tourId, err := strconv.Atoi(c.Param("tour-id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	result, err := h.service.Tour.DeleteTour(tourId)
+	result, err := h.service.Tour.DeleteTour(tourId, userId)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -62,12 +78,13 @@ func (h *Handler) deleteUserTour(c *gin.Context) {
 	}
 }
 func (h *Handler) getAllGuideTours(c *gin.Context) {
-	offset, err := strconv.Atoi(c.Param("offset"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+	params,ok :=c.Keys["tourQueryParams"].(*ent.TourQueryParams)
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "reviewQueryParams not found")
 		return
 	}
-	tours,err := h.service.Tour.GetAllGuideTours(offset)
+
+	tours,err := h.service.Tour.GetAllGuideTours(params)
 	if err!=nil{
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

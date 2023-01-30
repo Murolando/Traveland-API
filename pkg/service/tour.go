@@ -34,14 +34,14 @@ func (s TourService) AddUserTour(newTour ent.AddPoints) (int, error) {
 	// return true,nil
 }
 
-func (s TourService) GetUserTours(userId int,offset int) (*[]ent.Tour, error){
-	return s.repo.GetUserTours(userId,offset)
+func (s TourService) GetUserTours(userId int,params *ent.TourQueryParams) (*[]ent.Tour, error){
+	return s.repo.GetUserTours(userId,params)
 }
-func (s TourService) DeleteTour(tourId int)(bool,error){
-	return s.repo.DeleteTour(tourId)
+func (s TourService) DeleteTour(tourId int,userId int)(bool,error){
+	return s.repo.DeleteTour(tourId,userId)
 }
-func (s TourService) GetAllGuideTours(offset int)(*[]ent.Tour,error){
-	return s.repo.GetAllGuideTours(offset)
+func (s TourService) GetAllGuideTours(params *ent.TourQueryParams)(*[]ent.Tour,error){
+	return s.repo.GetAllGuideTours(params)
 }
 func (s TourService) GetTourInfo(tourId int)(*ent.Tour,error){
 	return s.repo.GetTourInfo(tourId)

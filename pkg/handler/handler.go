@@ -61,7 +61,7 @@ func (h *Handler) InitRountes() *gin.Engine {
 				authReview.DELETE("/delete-review/:id", h.delteReview)
 			}
 
-			review.GET("/get-all-reviews/:place-id/:guide-id/:offset",h.reviewQueryParams,h.getAllReview)
+			review.GET("/get-all-reviews",h.reviewQueryParams,h.getAllReview)
 
 			// review.PUT("/update-review", h.updateReview)		
 			
@@ -89,11 +89,15 @@ func (h *Handler) InitRountes() *gin.Engine {
 		{
 			tourAuth := tour.Group("/",h.userIdentity)
 			{
-				tourAuth.POST("/add-user-tour/",h.addUserTour)
-				tourAuth.GET("/get-all-user-tours/:user-id/:offset",h.getAllUserTours)
+				tourAuth.POST("/add-user-tour",h.addUserTour)
+				tourAuth.GET("/get-all-user-tours",h.tourQueryParams,
+					h.getAllUserTours)
+
 				tourAuth.DELETE("/delete-user-tour/:tour-id",h.deleteUserTour)
 			}
-			tour.GET("/get-all-guide-tours/:offset",h.getAllGuideTours)
+
+
+			tour.GET("/get-all-guide-tours",h.tourQueryParams,h.getAllGuideTours)
 			tour.GET("/get-tour-info/:tour-id",h.getTourInfo)
 			// tour.GET("/get-all-tours/",h.getAllTours)
 			

@@ -55,6 +55,7 @@ func (r ReviewBD) DeleteReview(id int,userId int)(bool,error){
 	}
 	return false,nil
 }
+
 func (r ReviewBD) GetAllReview(params *ent.ReviewQueryParams)([]ent.Review,error){
 	placeId := params.PlaceId
 	guideId := params.GuideId

@@ -149,6 +149,7 @@ CREATE TABLE "tour"
     id                      serial PRIMARY KEY  not null unique,
     name                    varchar(40) null,
     description             TEXT null,
+    price                   int null,
     user_id                 int references "user" (id) on delete cascade not null
 );
 CREATE TABLE "tour_place"

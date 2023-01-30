@@ -41,9 +41,9 @@ type User interface{
 }
 type Tour interface{
 	AddUserTour(newTour ent.AddPoints)(int,error)
-	GetUserTours(userId int,offset int) (*[]ent.Tour, error)
-	DeleteTour(tourId int)(bool,error)
-	GetAllGuideTours(offset int)(*[]ent.Tour,error)
+	GetUserTours(userId int,params *ent.TourQueryParams) (*[]ent.Tour, error)
+	DeleteTour(tourId int,userId int)(bool,error)
+	GetAllGuideTours(params *ent.TourQueryParams)(*[]ent.Tour,error)
 	GetTourInfo(tourId int)(*ent.Tour,error)
 }
 

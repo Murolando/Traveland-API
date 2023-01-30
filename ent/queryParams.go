@@ -25,3 +25,10 @@ type ReviewQueryParams struct {
 	Offset  int // offset = int
 	Limit   int // limit = int
 }
+
+type TourQueryParams struct {
+	// SortBy      string // sort_by = str  name, price, avg_rating, rating_count
+	// SortOrder   string // sort_order = str asc,desc
+	Offset  int // offset = int
+	Limit   int // limit = int
+}
