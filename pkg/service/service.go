@@ -7,7 +7,7 @@ import (
 type Review interface{
 	AddReview(review ent.Review) (int,error)
 	DeleteReview(id int,userId int)(bool,error)
-	GetAllReview(placeId int,guideId int, offset int)([]ent.Review,error)
+	GetAllReview(params *ent.ReviewQueryParams)([]ent.Review,error)
 	UpdateReview(reviewId int,rating int, reviewText string) (bool,error)
 }
 type Authorization interface {
@@ -33,7 +33,7 @@ type Place interface {
 }
 type User interface{
 	GetUserByID(id int) (ent.User,error)
-	GetAllUsers() ([]ent.User,error)
+	GetAllGuides() ([]ent.User,error)
 	GetUsersByRole(role_id int,offset int) ([]ent.User,error)
 	UpdateUserInfo(user ent.User)(bool,error)
 	AddPhoto(userId int,photo []byte,imgExt string) (bool,error)

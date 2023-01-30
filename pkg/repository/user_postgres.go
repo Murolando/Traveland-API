@@ -22,9 +22,9 @@ func NewUserBD(db *sqlx.DB) *UserBD {
 
 func (r UserBD) GetUserByID(id int) (ent.User, error) {
 	var user ent.User
-	query := fmt.Sprintf("SELECT id,name,last_name,password_hash,role_id,email,numbers,sex,registration_datetime,image_src FROM \"%s\" WHERE id = $1", userTable)
+	query := fmt.Sprintf("SELECT id,name,last_name,role_id,email,numbers,sex,image_src FROM \"%s\" WHERE id = $1", userTable)
 	row := r.db.QueryRow(query, id)
-	if err := row.Scan(&user.UserId, &user.Name,&user.LastName,&user.Password, &user.Role_id, &user.Mail,&user.Number, &user.Sex, &user.RegisterTime,&user.Image_src); err != nil {
+	if err := row.Scan(&user.UserId, &user.Name,&user.LastName,&user.Role_id, &user.Mail,&user.Number, &user.Sex,&user.Image_src); err != nil {
 		return ent.User{}, err
 	}
 	// pht,err := r.getPhoto(id)
@@ -34,9 +34,14 @@ func (r UserBD) GetUserByID(id int) (ent.User, error) {
 	// user.Photo = append(user.Photo, pht)
 	return user, nil
 }
-func (r UserBD) GetAllUsers() ([]ent.User, error) {
+func (r UserBD) GetAllGuides() ([]ent.User, error) {
 	users := make([]ent.User, 0)
-	query := fmt.Sprintf("SELECT id,name,last_name,password_hash,role_id,email,numbers,sex,registration_datetime,image_src FROM \"%s\"", userTable)
+	query := fmt.Sprintf(`SELECT id,name,
+	last_name,
+	sex,
+	image_src
+	FROM "%s"
+	WHERE role_id = 2`, userTable)
 	rows, err := r.db.Query(query)
 	if err != nil {
 		return nil, err
@@ -44,7 +49,7 @@ func (r UserBD) GetAllUsers() ([]ent.User, error) {
 	for rows.Next() {
 		var user ent.User
 
-		if err := rows.Scan(&user.UserId, &user.Name,&user.LastName,&user.Password, &user.Role_id, &user.Mail,&user.Number, &user.Sex, &user.RegisterTime,&user.Image_src); err != nil {
+		if err := rows.Scan(&user.UserId, &user.Name,&user.LastName,&user.Role_id, &user.Mail,&user.Number, &user.Sex, &user.Image_src); err != nil {
 			return nil, err
 		}
 		// pht,err := r.getPhoto(user.UserId)

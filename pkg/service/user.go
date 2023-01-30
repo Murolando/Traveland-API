@@ -21,8 +21,8 @@ func (s UserCRUDService) GetUserByID(id int) (ent.User, error) {
 	return s.repo.GetUserByID(id)
 }
 
-func (s UserCRUDService) GetAllUsers() ([]ent.User, error) {
-	return s.repo.GetAllUsers()
+func (s UserCRUDService) GetAllGuides() ([]ent.User, error) {
+	return s.repo.GetAllGuides()
 }
 func (s UserCRUDService) GetUsersByRole(role_id int,offset int) ([]ent.User, error) {
 	return s.repo.GetUsersByRole(role_id, offset)

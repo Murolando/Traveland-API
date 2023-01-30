@@ -14,6 +14,8 @@ func (h *Handler) addReview(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
+
+
 	numId, ok := c.Get("userId")
 	if !ok {
 		newErrorResponse(c, http.StatusInternalServerError, "userCtx not found")
@@ -57,22 +59,13 @@ func (h *Handler) delteReview(c *gin.Context) {
 
 // }
 func (h *Handler) getAllReview(c *gin.Context) {
-	placeId, err := strconv.Atoi(c.Param("place-id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	params,ok :=c.Keys["reviewQueryParams"].(*ent.ReviewQueryParams)
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "reviewQueryParams not found")
 		return
 	}
-	guideId, err := strconv.Atoi(c.Param("guide-id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	offset, err := strconv.Atoi(c.Param("offset"))
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	reviews, err := h.service.Review.GetAllReview(placeId,guideId,offset)
+
+	reviews, err := h.service.Review.GetAllReview(params)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

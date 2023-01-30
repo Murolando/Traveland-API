@@ -44,7 +44,7 @@ func (h *Handler) userIdentity(c *gin.Context) {
 // house_type_id = int (1...n)
 
 
-func (h *Handler) placeQueryParametrs(c *gin.Context) {
+func (h *Handler) placeQueryParams(c *gin.Context) {
 	queryParams := c.Request.URL.Query()
 	placeQuery := ent.PlaceQueryParams{
 		Limit: 20,
@@ -120,4 +120,59 @@ func (h *Handler) placeQueryParametrs(c *gin.Context) {
 
 
 	c.Set("placeQueryParams", &placeQuery)
+}
+
+func (h *Handler) reviewQueryParams(c *gin.Context){
+	queryParams := c.Request.URL.Query()
+	reviewQuery := ent.ReviewQueryParams{
+		Limit: 20,
+		Offset: 0,
+		PlaceId: -1,
+		GuideId: -1,
+	}
+	if queryParams["place_id"] != nil{
+		placeId,err := strconv.Atoi(queryParams["place_id"][0])
+		if err!=nil{
+			newErrorResponse(c, http.StatusUnauthorized, "bad place_id type")
+			return
+		}
+		if placeId <=0{
+			newErrorResponse(c, http.StatusUnauthorized, "bad place_id type")
+			return
+		}
+		reviewQuery.PlaceId = placeId
+	}
+	if queryParams["guide_id"] != nil{
+		guideId,err := strconv.Atoi(queryParams["guide_id"][0])
+		if err!=nil{
+			newErrorResponse(c, http.StatusUnauthorized, "bad guide_id type")
+			return
+		}
+		if guideId <=0{
+			newErrorResponse(c, http.StatusUnauthorized, "bad guide_id type")
+			return
+		}
+		reviewQuery.PlaceId = guideId
+	}
+	if reviewQuery.PlaceId ==-1 && reviewQuery.GuideId ==-1{
+		newErrorResponse(c, http.StatusUnauthorized, "not found place_id or guide_id")
+		return
+	}
+	if queryParams["offset"] != nil{
+		offset,err := strconv.Atoi(queryParams["offset"][0])
+		if err!=nil{
+			newErrorResponse(c, http.StatusUnauthorized, "bad offset type")
+			return
+		}
+		reviewQuery.Offset = offset
+	}
+	if queryParams["limit"] != nil{
+		limit,err := strconv.Atoi(queryParams["limit"][0])
+		if err!=nil{
+			newErrorResponse(c, http.StatusUnauthorized, "bad limit type")
+			return
+		}
+		reviewQuery.Limit = limit
+	}
+	c.Set("reviewQueryParams", &reviewQuery)
 }

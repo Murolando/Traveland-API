@@ -68,8 +68,8 @@ func (h *Handler) getUserByID(c *gin.Context) {
 	newResponse(c, "users", user)
 }
 
-func (h *Handler) getAllUsers(c *gin.Context) {
-	users, err := h.service.GetAllUsers()
+func (h *Handler) getAllGuides(c *gin.Context) {
+	users, err := h.service.GetAllGuides()
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

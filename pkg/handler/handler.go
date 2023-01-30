@@ -32,7 +32,7 @@ func (h *Handler) InitRountes() *gin.Engine {
 		{
 			place.GET("/get-place/:id", h.getPlaceByID)
 
-			queryParams := place.Group("/",h.placeQueryParametrs)
+			queryParams := place.Group("/",h.placeQueryParams)
 			{
 				queryParams.GET("/get-all-place/:place-ind", h.getAllPlace)
 			}
@@ -57,40 +57,43 @@ func (h *Handler) InitRountes() *gin.Engine {
 		{
 			authReview := review.Group("/",h.userIdentity)
 			{
-				authReview.POST("/add-review/", h.addReview)
+				authReview.POST("/add-review/",h.addReview)
 				authReview.DELETE("/delete-review/:id", h.delteReview)
 			}
-			review.GET("/get-all-reviews/:place-id/:guide-id/:offset",h.getAllReview)
+
+			review.GET("/get-all-reviews/:place-id/:guide-id/:offset",h.reviewQueryParams,h.getAllReview)
 
 			// review.PUT("/update-review", h.updateReview)		
 			
 		}
-		user := api.Group("/user",h.userIdentity)
+		user := api.Group("/user")
 		{
 			// user.POST("/add-user", h.addUser)
 			// user.DELETE("/delete-user/:id", h.delteUser)
 
 			// user.POST("/add-photo/",h.addPhoto)
-
-			user.DELETE("/delete-user", h.deleteUser)
-			user.POST("/update-user", h.updateUser)
-			user.GET("/get-user", h.getUserByID)
+			userIden:= user.Group("/",h.userIdentity)
+			{
+				userIden.DELETE("/delete-user", h.deleteUser)
+				userIden.POST("/update-user", h.updateUser)
+				userIden.GET("/get-user", h.getUserByID)
+			}
 			
-			user.GET("/get-all-users", h.getAllUsers)
+			
+			user.GET("/get-all-guides", h.getAllGuides)
 
 
-			user.GET("/get-users-by-role/:role-id/:offset", h.getUsersByRole)
+			// user.GET("/get-users-by-role/:role-id/:offset", h.getUsersByRole)
 		}
-		tour := api.Group("/tour",h.userIdentity)
+		tour := api.Group("/tour")
 		{
-
-			tour.POST("/add-user-tour/",h.addUserTour)
-			tour.GET("/get-all-user-tours/:user-id/:offset",h.getAllUserTours)
-
-			tour.DELETE("/delete-user-tour/:tour-id",h.deleteUserTour)
-
+			tourAuth := tour.Group("/",h.userIdentity)
+			{
+				tourAuth.POST("/add-user-tour/",h.addUserTour)
+				tourAuth.GET("/get-all-user-tours/:user-id/:offset",h.getAllUserTours)
+				tourAuth.DELETE("/delete-user-tour/:tour-id",h.deleteUserTour)
+			}
 			tour.GET("/get-all-guide-tours/:offset",h.getAllGuideTours)
-
 			tour.GET("/get-tour-info/:tour-id",h.getTourInfo)
 			// tour.GET("/get-all-tours/",h.getAllTours)
 			

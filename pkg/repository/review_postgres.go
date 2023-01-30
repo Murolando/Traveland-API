@@ -55,7 +55,11 @@ func (r ReviewBD) DeleteReview(id int,userId int)(bool,error){
 	}
 	return false,nil
 }
-func (r ReviewBD) GetAllReview(placeId int,guideId int, offset int)([]ent.Review,error){
+func (r ReviewBD) GetAllReview(params *ent.ReviewQueryParams)([]ent.Review,error){
+	placeId := params.PlaceId
+	guideId := params.GuideId
+	limit 	:= params.Limit
+	offset  := params.Offset
 	reviews := make([]ent.Review,0)
 	if placeId != 0{
 		query := fmt.Sprintf(`SELECT id,user_id,rating,review_text,review_datetime FROM "%s" WHERE place_id = $1 LIMIT $2 OFFSET $3`, reviewTable)

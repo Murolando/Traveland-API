@@ -18,6 +18,8 @@ type PlaceQueryParams struct {
 
 
 type ReviewQueryParams struct {
+	// SortBy      string // sort_by = str  name, price, avg_rating, rating_count
+	// SortOrder   string // sort_order = str asc,desc
 	PlaceId int // place_id = int
 	GuideId int	// guide_id = int
 	Offset  int // offset = int
