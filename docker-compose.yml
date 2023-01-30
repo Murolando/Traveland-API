@@ -7,8 +7,6 @@ services:
       - "5437:5432"
     volumes:
       - data:/var/lib/postgresql/data
-     
-
     environment:
       POSTGRES_PASSWORD: "123"
       POSTGRES_DB: "postgres"
@@ -26,6 +24,15 @@ services:
       - "8000:8000"
     # volumes:
     #  - storage:/storage/user
+  orsm:
+    build:
+      context: ./osrm
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - default
+    ports:
+      - "5000:5000"
 volumes:
   data:
   # storage:
