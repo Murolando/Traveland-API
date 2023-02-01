@@ -16,7 +16,7 @@ type Place struct {
 	NumberOfRating sql.NullInt32   `json:"number-of-rating"`
 	MeanRating     sql.NullFloat64 `json:"mean-rating"`
 	Photos         []string        `json:"photos"`
-	Shedule        Shedule         `json:"shedule"`
+	// Shedule        Shedule         `json:"shedule"`
 }
 
 type FavoritePlace struct {
