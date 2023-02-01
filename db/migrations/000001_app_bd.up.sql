@@ -52,7 +52,12 @@ CREATE TABLE "place"
     count_room              INT DEFAULT 0, 
     square                  INT DEFAULT 0
 );
-INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,mail,site_url,house_price,house_type_id) values('hotel1','vladik alooo',0.0,0.0,'jil','8928','jilnya','ublya',1400,1);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,mail,site_url,house_price,house_type_id) values('vld','vladik alooo',43.02708839915204,44.67459994750738,'jil','8928','jilnya','ublya',14500,1);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,mail,site_url,house_price,house_type_id) values('alex','vladik alooo',43.03088949618408,44.6801429109748,'jil','8928','jilnya','ublya',5400,1);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,mail,site_url,house_price,house_type_id) values('dom','vladik alooo',43.03988710538061,44.668457276358524,'jil','8928','jilnya','ublya',150,1);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,mail,site_url,house_price,house_type_id) values('dom2','vladik alooo',43.03842660342706,44.62910925868951,'jil','8928','jilnya','ublya',2400,1);
+INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,mail,site_url,house_price,house_type_id) values('geetto','vladik alooo',43.00996804849331,44.67571994298377,'jil','8928','jilnya','ublya',1300,1);
+
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('place1','jil',0.0,0.0,'jil','8928',TRUE,2500);  
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price) values('event','jil',0.0,0.0,'jil','8928',TRUE,350);
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price,event_day,event_start_time) values('event2','jil',0.0,0.0,'jil','8928',TRUE,350,'2023-12-22','10:24:15');
@@ -60,6 +65,7 @@ INSERT INTO "place" (name,description,location_long,location_lat,address,numbers
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price,event_day,event_start_time) values('event4','jil',0.0,0.0,'jil','8928',TRUE,350,'2023-12-22','12:24:00');
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price,event_day,event_start_time) values('event5','jil',0.0,0.0,'jil','8928',TRUE,350,'2023-12-22','12:24:00');
 INSERT INTO "place" (name,description,location_long,location_lat,address,numbers,pushkin,min_price,event_day,event_start_time) values('event6`','jil',0.0,0.0,'jil','8928',TRUE,350,'2023-12-22','12:24:00');
+
 CREATE TABLE "place_src"
 (
     id                      serial PRIMARY KEY not null unique,
