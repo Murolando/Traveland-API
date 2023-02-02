@@ -24,15 +24,15 @@ services:
       - "8000:8000"
     # volumes:
     #  - storage:/storage/user
-  orsm:
-    build:
-      context: ./osrm
-      dockerfile: Dockerfile
-    restart: always
-    networks:
-      - default
-    ports:
-      - "5000:5000"
+  # orsm:
+  #   build:
+  #     context: ./osrm
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   networks:
+  #     - default
+  #   ports:
+  #     - "5000:5000"
 volumes:
   data:
   # storage:
