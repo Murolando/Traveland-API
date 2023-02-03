@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -121,7 +120,7 @@ func (h *Handler) placeQueryParams(c *gin.Context) {
 	}
 
 	if queryParams["search"] != nil{
-		fmt.Println(queryParams["search"][0])
+		// fmt.Println(queryParams["search"][0])
 		searchStr := queryParams["search"][0]
 		
 		placeQuery.SearchStr = searchStr

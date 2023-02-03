@@ -360,7 +360,7 @@ func (r PlaceBD) getAllLocations(params *ent.PlaceQueryParams) (*[]ent.Location,
 		}
 		locations = append(locations, location)
 	}
-	fmt.Println(query)
+	
 	return &locations, nil
 }
 
