@@ -26,6 +26,15 @@ func NewPlaceBD(db *sqlx.DB) *PlaceBD {
 // place_type_id = int (3...n)
 // house_type_id = int (1...n)
 
+func (r PlaceBD) likeStr(str string) string{
+	if str == ""{
+		return ``
+	}else{
+		line := "%%"+str+"%%"
+		query := fmt.Sprintf(`AND (name LIKE '%s' OR description LIKE '%s') `,line,line)
+		return query
+	}
+}
 func (r PlaceBD) sortByOrder(srtBy string, srtOrder string) string {
 	query := fmt.Sprintf(`ORDER BY %s %s `, srtBy, srtOrder)
 	return query
@@ -216,7 +225,9 @@ func (r PlaceBD) getAllHousing(params *ent.PlaceQueryParams) (*[]ent.Housing, er
 	 WHERE place_id = place.id) AS avg_rating
 	FROM "%s" 
 	INNER JOIN "%s" ON place.id = place_type.place_id 
-	WHERE place_type.type_id = $1 `+r.houseType(params.HouseTypeId)+
+	WHERE place_type.type_id = $1 `+
+		r.houseType(params.HouseTypeId)+
+		r.likeStr(params.SearchStr)+
 		r.sortByOrder(params.SortBy, params.SortOrder)+
 		`LIMIT $2
 	OFFSET $3`, placeTable, placeTypeTable)
@@ -269,6 +280,7 @@ func (r PlaceBD) getAllEvents(params *ent.PlaceQueryParams) (*[]ent.Event, error
 	FROM "%s" 
 	INNER JOIN "%s" ON place.id = place_type.place_id 
 	WHERE place_type.type_id = $1 `+
+		r.likeStr(params.SearchStr)+
 		r.sortByOrder(params.SortBy, params.SortOrder)+
 		`LIMIT $2
 	OFFSET $3`, placeTable, placeTypeTable)
@@ -317,6 +329,7 @@ func (r PlaceBD) getAllLocations(params *ent.PlaceQueryParams) (*[]ent.Location,
 	INNER JOIN "%s" ON place.id = place_type.place_id 
 	WHERE NOT place_type.type_id = $1 and NOT place_type.type_id = $2 `+
 	r.localType(params.PlaceTypeId)+
+	r.likeStr(params.SearchStr)+
 	r.sortByOrder(params.SortBy, params.SortOrder)+
 	`LIMIT $3
 	OFFSET $4`, placeTable, placeTypeTable)
@@ -347,6 +360,7 @@ func (r PlaceBD) getAllLocations(params *ent.PlaceQueryParams) (*[]ent.Location,
 		}
 		locations = append(locations, location)
 	}
+	fmt.Println(query)
 	return &locations, nil
 }
 

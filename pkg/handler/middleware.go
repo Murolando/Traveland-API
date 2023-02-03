@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -51,6 +52,7 @@ func (h *Handler) placeQueryParams(c *gin.Context) {
 		Offset: 0,
 		SortBy: "name",
 		SortOrder: "ASC",
+		SearchStr: "",
 	}
 
 
@@ -116,6 +118,13 @@ func (h *Handler) placeQueryParams(c *gin.Context) {
 			return
 		}
 		placeQuery.Limit = limit
+	}
+
+	if queryParams["search"] != nil{
+		fmt.Println(queryParams["search"][0])
+		searchStr := queryParams["search"][0]
+		
+		placeQuery.SearchStr = searchStr
 	}
 
 

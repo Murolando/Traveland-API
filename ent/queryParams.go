@@ -8,6 +8,7 @@ type PlaceQueryParams struct {
 	Limit       int    // limit = int
 	PlaceTypeId int    // place_type_id = int
 	HouseTypeId int    // house_type_id = int
+	SearchStr 	string
 }
 // sort_by = str  name, price, avg_rating, rating_count
 // sort_order = str asc,desc

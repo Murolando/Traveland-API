@@ -103,13 +103,21 @@ CREATE TABLE "place_type"
     type_id                 int references "type" (id) on delete cascade not null
 );
 INSERT INTO "place_type" (place_id,type_id) values(1,1); 
-INSERT INTO "place_type" (place_id,type_id) values(2,3); 
-INSERT INTO "place_type" (place_id,type_id) values(3,2); 
-INSERT INTO "place_type" (place_id,type_id) values(4,2); 
-INSERT INTO "place_type" (place_id,type_id) values(5,2); 
-INSERT INTO "place_type" (place_id,type_id) values(6,2); 
+INSERT INTO "place_type" (place_id,type_id) values(2,1); 
+INSERT INTO "place_type" (place_id,type_id) values(3,1); 
+INSERT INTO "place_type" (place_id,type_id) values(4,1); 
+INSERT INTO "place_type" (place_id,type_id) values(5,1);
+
+INSERT INTO "place_type" (place_id,type_id) values(6,3); 
+
 INSERT INTO "place_type" (place_id,type_id) values(7,2); 
 INSERT INTO "place_type" (place_id,type_id) values(8,2); 
+INSERT INTO "place_type" (place_id,type_id) values(9,2); 
+INSERT INTO "place_type" (place_id,type_id) values(10,2); 
+INSERT INTO "place_type" (place_id,type_id) values(11,2);
+INSERT INTO "place_type" (place_id,type_id) values(12,2);
+ 
+
 
 CREATE TABLE "achieve"
 (
