@@ -129,6 +129,34 @@ func (h *Handler) placeQueryParams(c *gin.Context) {
 
 	c.Set("placeQueryParams", &placeQuery)
 }
+func (h *Handler) searchQueryParams(c *gin.Context){
+	queryParams := c.Request.URL.Query()
+	placeQuery := ent.PlaceQueryParams{
+		Limit:     500,
+		Offset:    0,
+		SortBy:    "name",
+		SortOrder: "ASC",
+		SearchStr: "",
+	}
+	if queryParams["offset"] != nil{
+		offset,err := strconv.Atoi(queryParams["offset"][0])
+		if err!=nil{
+			newErrorResponse(c, http.StatusUnauthorized, "bad offset type")
+			return
+		}
+		placeQuery.Offset = offset
+	}
+	if queryParams["limit"] != nil{
+		limit,err := strconv.Atoi(queryParams["limit"][0])
+		if err!=nil{
+			newErrorResponse(c, http.StatusUnauthorized, "bad limit type")
+			return
+		}
+		placeQuery.Limit = limit
+	}
+	
+	c.Set("placeQueryParams", &placeQuery)
+}
 
 func (h *Handler) reviewQueryParams(c *gin.Context){
 	queryParams := c.Request.URL.Query()

@@ -20,10 +20,7 @@ type Authorization interface {
 type Place interface {
 	GetPlaceByID(id int) (interface{}, error)
 	GetAllPlaces(placeInd int,params *ent.PlaceQueryParams) (interface{}, error)
-
-	GetLocalByType(placeType int,offset int) (*[]ent.Location, error)
-	GetHouseByType(houseType int,offset int) (*[]ent.Housing, error)
-
+	GetAllPlacesBySearch(params *ent.PlaceQueryParams)(interface{},error)
 	GetLocalTypes() (*[]ent.LocalType,error)
 	GetHouseTypes() (*[]ent.HouseType,error)
 

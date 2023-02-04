@@ -47,44 +47,20 @@ func (h *Handler) getAllPlace(c *gin.Context) {
 	}
 	newResponse(c, "places", places)
 }
-
-func (h *Handler) getLocalByType(c *gin.Context) {
-	typeId, err := strconv.Atoi(c.Param("type-id"))
+func (h *Handler) getAllPlacesBySearch(c *gin.Context){
+	searchStr := c.Param("search-string")
+	params,ok := c.Keys["placeQueryParams"].(*ent.PlaceQueryParams)
+	if !ok {
+		newErrorResponse(c, http.StatusInternalServerError, "placeQueryParams not found")
+		return
+	}
+	params.SearchStr = searchStr
+	places, err := h.service.GetAllPlacesBySearch(params)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	offset, err := strconv.Atoi(c.Param("offset"))
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	places, err := h.service.GetLocalByType(typeId, offset)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	newResponse(c, "locals", places)
-
-}
-
-func (h *Handler) getHouseByType(c *gin.Context) {
-	typeId, err := strconv.Atoi(c.Param("type-id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	offset, err := strconv.Atoi(c.Param("offset"))
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	places, err := h.service.GetHouseByType(typeId, offset)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	newResponse(c, "houses", places)
+	newResponse(c, "places", places)
 }
 func (h *Handler) getLocalTypes(c *gin.Context) {
 	localTypes, err := h.service.GetLocalTypes()
@@ -124,6 +100,7 @@ func (h *Handler) addFavoritePlace(c *gin.Context) {
 	}
 	newResponse(c, "", result)
 }
+
 func (h *Handler) getAllUserFavoritePlaces(c *gin.Context) {
 	numId, ok := c.Get("userId")
 	if !ok {

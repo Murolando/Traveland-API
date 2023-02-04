@@ -21,11 +21,8 @@ func (s PlaceService) GetPlaceByID(id int) (interface{}, error) {
 func (s PlaceService) GetAllPlaces(placeInd int, params *ent.PlaceQueryParams) (interface{}, error) {
 	return s.repo.GetAllPlaces(placeInd,params)
 }
-func (s PlaceService) GetLocalByType(placeType int, offset int) (*[]ent.Location, error){
-	return s.repo.GetLocalByType(placeType,offset)
-}
-func (s PlaceService)  GetHouseByType(houseType int,offset int) (*[]ent.Housing, error){
-	return s.repo.GetHouseByType(houseType,offset)
+func (s PlaceService) GetAllPlacesBySearch(params *ent.PlaceQueryParams)(interface{},error){
+	return s.repo.GetAllPlacesBySearch(params)
 }
 func (s PlaceService) GetLocalTypes() (*[]ent.LocalType,error){
 	return s.repo.GetLocalTypes()
