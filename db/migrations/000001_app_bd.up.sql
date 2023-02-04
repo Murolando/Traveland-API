@@ -177,3 +177,23 @@ CREATE TABLE "tour_place"
     start_tour              boolean,
     end_tour                boolean
 );
+
+CREATE TABLE "banner"
+(
+    id                      serial PRIMARY KEY not null unique,
+    banner_name             varchar(30) not null
+);
+INSERT INTO "banner" (banner_name) values('main'); 
+
+CREATE TABLE "banner_place"
+(
+    id                      serial PRIMARY KEY not null unique,
+    place_id                int references "place" (id) on delete cascade,
+    banner_id               int references "banner" (id) on delete cascade,
+    order_number            int not null,
+    image_src               varchar(500) not null
+);
+
+
+INSERT INTO "banner_place" (place_id,banner_id,order_number,image_src) values(3,1,2,'oleg.jpg'); 
+INSERT INTO "banner_place" (place_id,banner_id,order_number,image_src) values(1,1,1,'oleg.jpg'); 

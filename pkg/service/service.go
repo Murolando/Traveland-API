@@ -21,6 +21,8 @@ type Place interface {
 	GetPlaceByID(id int) (interface{}, error)
 	GetAllPlaces(placeInd int,params *ent.PlaceQueryParams) (interface{}, error)
 	GetAllPlacesBySearch(params *ent.PlaceQueryParams)(interface{},error)
+	GetBannerPlaces(bannerId int)(*[]ent.Banner,error)
+
 	GetLocalTypes() (*[]ent.LocalType,error)
 	GetHouseTypes() (*[]ent.HouseType,error)
 

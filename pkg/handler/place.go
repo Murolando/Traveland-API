@@ -62,6 +62,22 @@ func (h *Handler) getAllPlacesBySearch(c *gin.Context){
 	}
 	newResponse(c, "places", places)
 }
+func (h *Handler) getBannerPlaces(c *gin.Context){
+	bannerId, err := strconv.Atoi(c.Param("banner-id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	places,err := h.service.GetBannerPlaces(bannerId)
+	if err!=nil{
+		if err != nil {
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+	}
+	newResponse(c, "places", places)
+}
+
 func (h *Handler) getLocalTypes(c *gin.Context) {
 	localTypes, err := h.service.GetLocalTypes()
 	if err != nil {
@@ -70,7 +86,6 @@ func (h *Handler) getLocalTypes(c *gin.Context) {
 	}
 	newResponse(c, "local-types", localTypes)
 }
-
 func (h *Handler) getHouseTypes(c *gin.Context) {
 	houseTypes, err := h.service.GetHouseTypes()
 	if err != nil {

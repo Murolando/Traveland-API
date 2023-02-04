@@ -12,3 +12,5 @@ DROP TABLE "achieve";
 DROP TABLE "type";
 DROP TABLE "house_type";
 DROP TABLE "role";
+DROP TABLE "banner_place";
+DROP TABLE "banner";

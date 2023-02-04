@@ -24,6 +24,9 @@ func (s PlaceService) GetAllPlaces(placeInd int, params *ent.PlaceQueryParams) (
 func (s PlaceService) GetAllPlacesBySearch(params *ent.PlaceQueryParams)(interface{},error){
 	return s.repo.GetAllPlacesBySearch(params)
 }
+func (s PlaceService) GetBannerPlaces(bannerId int)(*[]ent.Banner,error){
+	return s.repo.GetBannerPlaces(bannerId)
+}
 func (s PlaceService) GetLocalTypes() (*[]ent.LocalType,error){
 	return s.repo.GetLocalTypes()
 }

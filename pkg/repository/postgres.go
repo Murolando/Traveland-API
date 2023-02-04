@@ -22,6 +22,8 @@ const (
 	tourTable = "tour"
 	tourPlaceTable = "tour_place"
 	placeSrcTable = "place_src"
+	bannerTable = "banner"
+	bannerPlaceTable = "banner_place"
 )
 
 const (

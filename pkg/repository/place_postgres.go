@@ -387,6 +387,26 @@ func (r PlaceBD) GetAllPlacesBySearch(params *ent.PlaceQueryParams)(interface{},
 	}
 	return allPlaces, nil
 }
+func (r PlaceBD) GetBannerPlaces(bannerId int)(*[]ent.Banner,error){
+	var banners []ent.Banner = make([]ent.Banner, 0)
+	query:=fmt.Sprintf(`
+	SELECT place_id,image_src
+	FROM "%s"
+	WHERE banner_id=$1
+	ORDER BY order_number ASC`,bannerPlaceTable)
+	rows, err := r.db.Query(query,bannerId)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		var banner ent.Banner
+		if err := rows.Scan(&banner.PlaceId,&banner.Image_src); err != nil {
+			return nil, err
+		}
+		banners = append(banners,banner)
+	}
+	return &banners,nil
+}
 func (r PlaceBD) GetLocalTypes() (*[]ent.LocalType, error) {
 	localTypes := make([]ent.LocalType, 0)
 	query := fmt.Sprintf(`SELECT id,name FROM "%s"`, typeTable)
