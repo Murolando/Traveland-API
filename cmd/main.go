@@ -2,27 +2,42 @@ package main
 
 import (
 	"log"
+	"os"
 	"traveland"
 	"traveland/pkg/handler"
 	"traveland/pkg/repository"
 	"traveland/pkg/service"
 
-	_"github.com/lib/pq"
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
+	"github.com/spf13/viper"
 )
 
 func main() {
-	
-	dbConfig := repository.NewConfig("database",5432,"postgres","123","postgres")
-	db,err := repository.NewPostgresDB(dbConfig)
-	if err != nil{
-		log.Fatal("Problems with db connect ",err)
+	if err := initConfig(); err != nil {
+		log.Fatal("error init config", err)
 	}
-    repository := repository.NewRepository(db)
-    service := service.NewService(repository)
-    handler := handler.NewHandler(service)
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("error loading env variables:", err)
+	}
+	// dbConfig := repository.NewConfig("database", 5432, "postgres", "123", "postgres")
+	dbConfig := repository.NewConfig(
+		viper.GetString("db.host"),
+		viper.GetString("db.port"),
+		viper.GetString("db.username"),
+		os.Getenv("DB_PASSWORD"),
+		viper.GetString("db.dbname"),
+	)
+	db, err := repository.NewPostgresDB(dbConfig)
+	if err != nil {
+		log.Fatal("Problems with db connect ", err)
+	}
+	repository := repository.NewRepository(db)
+	service := service.NewService(repository)
+	handler := handler.NewHandler(service)
 
 	srv := new(traveland.Server)
-	if err := srv.Run("8000",handler.InitRountes()); err != nil {
+	if err := srv.Run(viper.GetString("port"), handler.InitRountes()); err != nil {
 		log.Fatal(err)
 	}
 
@@ -39,3 +54,8 @@ func main() {
 	dbname   = "api_db"
 )*/
 
+func initConfig() error {
+	viper.AddConfigPath("configs")
+	viper.SetConfigName("config")
+	return viper.ReadInConfig()
+}

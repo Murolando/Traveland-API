@@ -33,9 +33,9 @@ type Place interface {
 type User interface{
 	GetUserByID(id int) (ent.User,error)
 	GetAllGuides() ([]ent.User,error)
-	GetUsersByRole(role_id int,offset int) ([]ent.User,error)
+	// GetUsersByRole(role_id int,offset int) ([]ent.User,error)
 	UpdateUserInfo(user ent.User)(bool,error)
-	AddPhoto(userId int,photo []byte,imgExt string) (bool,error)
+	// AddPhoto(userId int,photo []byte,imgExt string) (bool,error)
 	DeleteUser(userId int) (bool, error)
 }
 type Tour interface{

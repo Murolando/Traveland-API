@@ -2,10 +2,7 @@ package repository
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 	"traveland/ent"
-
 	"github.com/jmoiron/sqlx"
 	// "github.com/lib/pq"
 )
@@ -61,28 +58,6 @@ func (r UserBD) GetAllGuides() ([]ent.User, error) {
 	}
 	return users, nil
 }
-func (r UserBD) GetUsersByRole(role_id int, offset int) ([]ent.User, error) {
-	users := make([]ent.User, 0)
-	query := fmt.Sprintf("SELECT id,name,last_name,password_hash,role_id,email,numbers,sex,registration_datetime,image_src FROM \"%s\" WHERE role_id = $1 OFFSET $2 LIMIT $3", userTable)
-	rows, err := r.db.Query(query, role_id, offset, limit)
-	if err != nil {
-		return nil, err
-	}
-	for rows.Next() {
-		var user ent.User
-
-		if err := rows.Scan(&user.UserId, &user.Name,&user.LastName,&user.Password, &user.Role_id, &user.Mail,&user.Number, &user.Sex, &user.RegisterTime,&user.Image_src); err != nil {
-			return nil, err
-		}
-		// pht,err := r.getPhoto(user.UserId)
-		// if err != nil{
-		// 	return nil, err
-		// }
-		// user.Photo = append(user.Photo, pht)
-		users = append(users, user)
-	}
-	return users, nil
-}
 
 func (r UserBD) UpdateUserInfo(user ent.User) (bool, error) {
 	query := fmt.Sprintf(`UPDATE "%s" SET name = $1,password_hash = $2,sex = $3 WHERE id = $4`, userTable)
@@ -106,64 +81,4 @@ func (r UserBD) DeleteUser(userId int) (bool, error) {
 		return true,nil
 	}
 	return false,nil
-}
-
-func (r UserBD) getPhoto(userId int) (string, error) {
-	var photo string
-	err := filepath.Walk(fmt.Sprintf("./storage/user/%d", userId),
-		// err := filepath.Walk("./storage/place",
-		func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-			if !info.IsDir() {
-				photo = path
-				return nil
-			}
-			return nil
-		})
-	if err != nil {
-		return "", err
-	}
-	return photo, nil
-}
-func (r UserBD) AddPhoto(userId int,photo []byte,imgExt string) (bool, error) {
-	// user exist
-	var id int
-	query := fmt.Sprintf("SELECT id FROM \"%s\" WHERE id = $1", userTable)
-	row := r.db.QueryRow(query,userId)
-	if err := row.Scan(&id);err!=nil{
-		return false, err
-	}
-	// delete photo
-	err := filepath.Walk(fmt.Sprintf("./storage/user/%d",userId),
-	// err := filepath.Walk("./storage/place",
-		func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-			if !info.IsDir() {
-				err2 := os.Remove(path)
-				if err2 != nil {
-					return err
-				}
-			}
-			return nil
-		})
-	if err != nil {
-		return false,err
-	}
-	// addPhoto
-	fullFileName := fmt.Sprintf("%d.%s", userId, imgExt)
-	fileOnDisk, err := os.Create(fmt.Sprintf("%s/%s", fmt.Sprintf("./storage/user/%d", userId), fullFileName))
-	if err != nil {
-		return false,err
-	}
-	defer fileOnDisk.Close()
-
-	_, err = fileOnDisk.Write(photo)
-	if err != nil {
-		return false,err
-	}
-	return true, nil
 }

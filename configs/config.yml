@@ -1,0 +1,11 @@
+port: "8000"
+
+db: 
+    username: "postgres"
+    host: "database"
+    port: "5432"
+    dbname: "postgres"
+    password: "123"
+
+
+      

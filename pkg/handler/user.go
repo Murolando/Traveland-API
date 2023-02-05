@@ -1,10 +1,7 @@
 package handler
 
 import (
-	"io/ioutil"
 	"net/http"
-	"strconv"
-	"strings"
 	"traveland/ent"
 
 	"github.com/gin-gonic/gin"
@@ -20,15 +17,15 @@ func (h *Handler) deleteUser(c *gin.Context) {
 		return
 	}
 	id := numId.(int)
-	t,err := h.service.User.DeleteUser(id)
-	if err != nil{
+	t, err := h.service.User.DeleteUser(id)
+	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	if t == true{
+	if t == true {
 		newResponse(c, "", true)
-	}else{
-		newErrorResponse(c, http.StatusInternalServerError,"records are missing")
+	} else {
+		newErrorResponse(c, http.StatusInternalServerError, "records are missing")
 		return
 	}
 }
@@ -77,69 +74,69 @@ func (h *Handler) getAllGuides(c *gin.Context) {
 	newResponse(c, "users", users)
 }
 
-func (h *Handler) getUsersByRole(c *gin.Context) {
-	roleId, err := strconv.Atoi(c.Param("role-id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	offset, err := strconv.Atoi(c.Param("offset"))
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+// func (h *Handler) getUsersByRole(c *gin.Context) {
+// 	roleId, err := strconv.Atoi(c.Param("role-id"))
+// 	if err != nil {
+// 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+// 		return
+// 	}
+// 	offset, err := strconv.Atoi(c.Param("offset"))
+// 	if err != nil {
+// 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+// 		return
+// 	}
 
-	users, err := h.service.GetUsersByRole(roleId, offset)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	newResponse(c, "users", users)
-}
+// 	users, err := h.service.GetUsersByRole(roleId, offset)
+// 	if err != nil {
+// 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+// 		return
+// 	}
+// 	newResponse(c, "users", users)
+// }
 
-//DONT WORK
-func (h *Handler) addPhoto(c *gin.Context) {
+// //DONT WORK
+// func (h *Handler) addPhoto(c *gin.Context) {
 
-	// form reader
-	userId,_ := strconv.Atoi(c.PostForm("userd"))
+// 	// form reader
+// 	userId,_ := strconv.Atoi(c.PostForm("userd"))
 
-	form, _ := c.MultipartForm()
-	// filename
-	var fileName string
-	imgExt := "jpeg"
+// 	form, _ := c.MultipartForm()
+// 	// filename
+// 	var fileName string
+// 	imgExt := "jpeg"
 
-	// берем первое имя файла из присланного списка
-	for key := range form.File {
-		fileName = key
-		// извлекаем расширение файла
-		arr := strings.Split(fileName, ".")
-		if len(arr) > 1 {
-			imgExt = arr[len(arr)-1]
-		}
-		continue
-	}
+// 	// берем первое имя файла из присланного списка
+// 	for key := range form.File {
+// 		fileName = key
+// 		// извлекаем расширение файла
+// 		arr := strings.Split(fileName, ".")
+// 		if len(arr) > 1 {
+// 			imgExt = arr[len(arr)-1]
+// 		}
+// 		continue
+// 	}
 
-	// извлекаем содержание присланного файла по названию файла
-	file, _, err := c.Request.FormFile(fileName)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	defer file.Close()
+// 	// извлекаем содержание присланного файла по названию файла
+// 	file, _, err := c.Request.FormFile(fileName)
+// 	if err != nil {
+// 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+// 		return
+// 	}
+// 	defer file.Close()
 
-	// читаем содержание присланного файл в []byte
-	fileBytes, err := ioutil.ReadAll(file)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
+// 	// читаем содержание присланного файл в []byte
+// 	fileBytes, err := ioutil.ReadAll(file)
+// 	if err != nil {
+// 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+// 		return
+// 	}
 
-	result, err := h.service.AddPhoto(userId, fileBytes, imgExt)
-	if err != nil{
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	
-	// берем первое имя файла из присланного списка
-	newResponse(c, "", result)
-}
+// 	result, err := h.service.AddPhoto(userId, fileBytes, imgExt)
+// 	if err != nil{
+// 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+// 		return
+// 	}
+
+// 	// берем первое имя файла из присланного списка
+// 	newResponse(c, "", result)
+// }

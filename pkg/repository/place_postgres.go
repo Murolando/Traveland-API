@@ -131,7 +131,7 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		description,location_long,
 		location_lat,address,numbers,
 		house_price,house_type_id,mail,site_url 
-		FROM \"%s\"
+		FROM "%s"
 		 WHERE id = $1`, placeTable)
 		row := r.db.QueryRow(query, id)
 		if err := row.Scan(&house.PlaceInfo.PlaceId, &house.PlaceInfo.Name,
@@ -154,7 +154,7 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		location_long,location_lat,
 		address,numbers,pushkin
 		,min_price 
-		FROM \"%s\" 
+		FROM "%s"
 		WHERE id = $1`, placeTable)
 
 		row := r.db.QueryRow(query, id)
@@ -174,7 +174,7 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		query = fmt.Sprintf(`
 		SELECT id,name,description,location_long,
 		location_lat,address,numbers,pushkin,min_price 
-		FROM \"%s\" 
+		FROM "%s" 
 		WHERE id = $1`, placeTable)
 		row := r.db.QueryRow(query, id)
 		if err := row.Scan(&location.PlaceInfo.PlaceId,
@@ -455,7 +455,7 @@ func (r PlaceBD) AddFavoritePlace(userId int, placeId int) (bool, error) {
 }
 
 func (r PlaceBD) GetAllUserFavoritePlaces(userId int) (*[]interface{}, error) {
-	query := fmt.Sprintf("SELECT place_id FROM \"%s\" WHERE user_id = $1", favoritePlaceTable)
+	query := fmt.Sprintf(`SELECT place_id FROM "%s" WHERE user_id = $1`, favoritePlaceTable)
 	var favPlaces []interface{} = make([]interface{}, 0)
 	rows, err := r.db.Query(query, userId)
 	if err != nil {

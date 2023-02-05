@@ -26,19 +26,19 @@ const (
 	bannerPlaceTable = "banner_place"
 )
 
-const (
-	limit int = 20
-)
+// const (
+// 	limit int = 20
+// )
 
 type Config struct {
 	host     string
-	port     int
+	port     string
 	user     string
 	password string
 	dbname   string
 }
 
-func NewConfig(host string, port int, user string, password string, dbname string) *Config {
+func NewConfig(host string, port string, user string, password string, dbname string) *Config {
 	return &Config{
 		host:     host,
 		port:     port,
@@ -51,7 +51,7 @@ func NewConfig(host string, port int, user string, password string, dbname strin
 // pq - driver ,sqlx - interfase  , pgx - driver+interfase
 /*Драйвер это реализация интерфейсов для sql(sqlx - просто расширение sql)*/
 func NewPostgresDB(cfg *Config) (*sqlx.DB, error) {
-	connStr := fmt.Sprintf("host = %s port = %d user = %s dbname = %s password = %s  sslmode = disable",
+	connStr := fmt.Sprintf("host = %s port = %s user = %s dbname = %s password = %s  sslmode = disable",
 		cfg.host, cfg.port, cfg.user, cfg.dbname, cfg.password)
 	db, err := sqlx.Connect("postgres", connStr)
 	if err != nil {

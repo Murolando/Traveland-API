@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"os"
 	"strconv"
 	"time"
 	"traveland/ent"
@@ -14,7 +15,6 @@ import (
 )
 
 const (
-	signInKey = "as8129ru129fijwi9hahg7"
 	refreshTokenTime = 30 * 24
 )
 
@@ -39,7 +39,7 @@ func (s AuthService) CreateUser(user ent.User) (map[string]interface{}, error) {
 	// if err!=nil{
 	// 	return nil, err
 	// }
-	
+
 	// user.Session.RefreshToken = ses
 	// user.Session.ExpiredAt = time.Now().Add(refreshTokenTime*time.Hour).Unix()
 
@@ -74,12 +74,12 @@ func (s AuthService) generateHashPassword(password string) string {
 func (s AuthService) GenerateToken(id int) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
+			ExpiresAt: time.Now().Add(15 * time.Minute).Unix(),
 			IssuedAt:  time.Now().Unix(),
 			Subject:   strconv.Itoa(id),
 		},
 	})
-	str, err := token.SignedString([]byte(signInKey))
+	str, err := token.SignedString([]byte(os.Getenv("SIGNINKEY")))
 	return str, err
 }
 
@@ -89,14 +89,14 @@ func (s AuthService) ParseToken(accesstoken string) (int, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("invalid string method")
 		}
-		return []byte(signInKey), nil
+		return []byte(os.Getenv("SIGNINKEY")), nil
 	})
 	if err != nil {
 		return 0, err
 	}
 	if claims, ok := token.Claims.(*tokenClaims); ok && token.Valid {
-		id,err:=strconv.Atoi(claims.Subject)
-		if err!=nil{
+		id, err := strconv.Atoi(claims.Subject)
+		if err != nil {
 			return 0, errors.New("Troubles with convert string to int")
 		}
 		return id, nil
@@ -105,14 +105,14 @@ func (s AuthService) ParseToken(accesstoken string) (int, error) {
 }
 
 // refresh token
-func (s AuthService) NewRefreshToken()(string,error){
-	b := make([]byte,32)
+func (s AuthService) NewRefreshToken() (string, error) {
+	b := make([]byte, 32)
 	ss := rand.NewSource(time.Now().Unix())
 	r := rand.New(ss)
 
-	_,err := r.Read(b)
-	if err!=nil{
-		return "",err
+	_, err := r.Read(b)
+	if err != nil {
+		return "", err
 	}
-	return fmt.Sprintf("%x",b), nil
+	return fmt.Sprintf("%x", b), nil
 }
