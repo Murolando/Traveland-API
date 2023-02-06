@@ -5,7 +5,7 @@ db:
     host: "database"
     port: "5432"
     dbname: "postgres"
-    password: "123"
+    # password: "123"
 
 
       

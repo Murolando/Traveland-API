@@ -48,7 +48,7 @@ func main() {
 // migrate -path ./db/migrations -database 'postgres://postgres:123@localhost:5432/app_bd?sslmode=disable' up
 /*const (
 	host     = "localhost"
-	port     = 5432
+	port     = 5437
 	user     = "postgres"
 	password = "123"
 	dbname   = "api_db"
