@@ -17,6 +17,7 @@ func NewHandler(service *service.Service) *Handler {
 }
 
 func (h *Handler) InitRountes() *gin.Engine {
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.New()
 	router.Static("/storage","./storage")
 	// router.StaticFS("/more_static", http.Dir("my_file_system"))
