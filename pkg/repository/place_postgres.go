@@ -158,7 +158,7 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		if err := row.Scan(&house.PlaceInfo.PlaceId, &house.PlaceInfo.Name,
 			&house.PlaceInfo.Description,
 			&house.PlaceInfo.Longitude, &house.PlaceInfo.Latitude,
-			&house.PlaceInfo.Adress, &house.PlaceInfo.Number,
+			&house.PlaceInfo.Adress, &house.PlaceInfo.NonFormatNumber,
 			&house.HousePrice, &house.HouseTypeId,
 			&house.PlaceInfo.Mail, &house.PlaceInfo.Url); err != nil {
 			return ent.Housing{}, err
@@ -167,8 +167,8 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		// if err != nil{
 		// 	return ent.Housing{},err
 		// }
-		if (house.PlaceInfo.Number.Valid && len(house.PlaceInfo.Number.String) == 11){
-			house.PlaceInfo.Number.String = r.formatNumber([]byte(house.PlaceInfo.Number.String))
+		if (house.PlaceInfo.NonFormatNumber.Valid && len(house.PlaceInfo.NonFormatNumber.String) == 11){
+			house.PlaceInfo.Number.String = r.formatNumber([]byte(house.PlaceInfo.NonFormatNumber.String))
 		}
 		return house, nil
 	case 2:
@@ -185,15 +185,16 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		if err := row.Scan(&event.PlaceInfo.PlaceId, &event.PlaceInfo.Name,
 			&event.PlaceInfo.Description, &event.PlaceInfo.Longitude,
 			&event.PlaceInfo.Latitude, &event.PlaceInfo.Adress,
-			&event.PlaceInfo.Number, &event.Pushkin, &event.Price); err != nil {
+			&event.PlaceInfo.NonFormatNumber, &event.Pushkin, &event.Price); err != nil {
 			return ent.Event{}, err
 		}
 		// event.PlaceInfo.Photos,err = r.getAllPhotos(event.PlaceInfo.PlaceId)
 		// if err != nil{
 		// 	return ent.Event{},err
 		// }
-		if (event.PlaceInfo.Number.Valid && len(event.PlaceInfo.Number.String) == 11){
-			event.PlaceInfo.Number.String = r.formatNumber([]byte(event.PlaceInfo.Number.String))
+		
+		if (event.PlaceInfo.NonFormatNumber.Valid && len(event.PlaceInfo.NonFormatNumber.String) == 11){
+			event.PlaceInfo.Number.String = r.formatNumber([]byte(event.PlaceInfo.NonFormatNumber.String))
 		}
 		return event, nil
 		
@@ -208,7 +209,7 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		if err := row.Scan(&location.PlaceInfo.PlaceId,
 			&location.PlaceInfo.Name, &location.PlaceInfo.Description,
 			&location.PlaceInfo.Longitude, &location.PlaceInfo.Latitude,
-			&location.PlaceInfo.Adress, &location.PlaceInfo.Number,
+			&location.PlaceInfo.Adress, &location.PlaceInfo.NonFormatNumber,
 			&location.Pushkin, &location.MinPrice); err != nil {
 			return ent.Location{}, err
 		}
@@ -216,8 +217,8 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		// if err != nil{
 		// 	return ent.Location{},err
 		// }
-		if (location.PlaceInfo.Number.Valid && len(location.PlaceInfo.Number.String) == 11){
-			location.PlaceInfo.Number.String = r.formatNumber([]byte(location.PlaceInfo.Number.String))
+		if (location.PlaceInfo.NonFormatNumber.Valid && len(location.PlaceInfo.NonFormatNumber.String) == 11){
+			location.PlaceInfo.Number.String = r.formatNumber([]byte(location.PlaceInfo.NonFormatNumber.String))
 		}
 		return location, nil
 	}
@@ -280,13 +281,13 @@ func (r PlaceBD) getAllHousing(params *ent.PlaceQueryParams) (*[]ent.Housing, er
 			&house.PlaceInfo.Name, &house.PlaceInfo.Description,
 			&house.PlaceInfo.Longitude,
 			&house.PlaceInfo.Latitude, &house.PlaceInfo.Adress,
-			&house.PlaceInfo.Number, &house.PlaceInfo.Mail, &house.PlaceInfo.Url,
+			&house.PlaceInfo.NonFormatNumber, &house.PlaceInfo.Mail, &house.PlaceInfo.Url,
 			&house.HousePrice, &house.HouseTypeId, &house.PlaceInfo.NumberOfRating,
 			&house.PlaceInfo.MeanRating); err != nil {
 			return nil, err
 		}
-		if (house.PlaceInfo.Number.Valid && len(house.PlaceInfo.Number.String) == 11){
-			house.PlaceInfo.Number.String = r.formatNumber([]byte(house.PlaceInfo.Number.String))
+		if (house.PlaceInfo.NonFormatNumber.Valid && len(house.PlaceInfo.NonFormatNumber.String) == 11){
+			house.PlaceInfo.Number.String = r.formatNumber([]byte(house.PlaceInfo.NonFormatNumber.String))
 		}
 		house.Shedule, err = r.getShedule(house.PlaceInfo.PlaceId)
 		if err != nil {
@@ -332,14 +333,14 @@ func (r PlaceBD) getAllEvents(params *ent.PlaceQueryParams) (*[]ent.Event, error
 		if err := rows.Scan(&event.PlaceInfo.PlaceId, &event.PlaceInfo.Name,
 			&event.PlaceInfo.Description, &event.PlaceInfo.Longitude,
 			&event.PlaceInfo.Latitude, &event.PlaceInfo.Adress,
-			&event.PlaceInfo.Number, &event.PlaceInfo.Mail, &event.PlaceInfo.Url,
+			&event.PlaceInfo.NonFormatNumber, &event.PlaceInfo.Mail, &event.PlaceInfo.Url,
 			&event.Price, &event.EventDay, &event.EventStartTime,
 			&event.EventEndTime, &event.PlaceInfo.NumberOfRating,
 			&event.PlaceInfo.MeanRating); err != nil {
 			return nil, err
 		}
-		if (event.PlaceInfo.Number.Valid && len(event.PlaceInfo.Number.String) == 11){
-			event.PlaceInfo.Number.String = r.formatNumber([]byte(event.PlaceInfo.Number.String))
+		if (event.PlaceInfo.NonFormatNumber.Valid && len(event.PlaceInfo.NonFormatNumber.String) == 11){
+			event.PlaceInfo.Number.String = r.formatNumber([]byte(event.PlaceInfo.NonFormatNumber.String))
 		}
 		event.PlaceInfo.Photos, err = r.getAllPhotos(event.PlaceInfo.PlaceId)
 		if err != nil {
@@ -383,13 +384,13 @@ func (r PlaceBD) getAllLocations(params *ent.PlaceQueryParams) (*[]ent.Location,
 		if err := rows.Scan(&location.PlaceInfo.PlaceId, &location.PlaceInfo.Name,
 			&location.PlaceInfo.Description,
 			&location.PlaceInfo.Longitude, &location.PlaceInfo.Latitude,
-			&location.PlaceInfo.Adress, &location.PlaceInfo.Number,
+			&location.PlaceInfo.Adress, &location.PlaceInfo.NonFormatNumber,
 			&location.PlaceInfo.Mail, &location.PlaceInfo.Url, &location.MinPrice,
 			&location.PlaceInfo.NumberOfRating, &location.PlaceInfo.MeanRating); err != nil {
 			return nil, err
 		}
-		if (location.PlaceInfo.Number.Valid && len(location.PlaceInfo.Number.String) == 11){
-			location.PlaceInfo.Number.String = r.formatNumber([]byte(location.PlaceInfo.Number.String))
+		if (location.PlaceInfo.NonFormatNumber.Valid && len(location.PlaceInfo.NonFormatNumber.String) == 11){
+			location.PlaceInfo.Number.String = r.formatNumber([]byte(location.PlaceInfo.NonFormatNumber.String))
 		}
 		location.Shedule, err = r.getShedule(location.PlaceInfo.PlaceId)
 		if err != nil {
