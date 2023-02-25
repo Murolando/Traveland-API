@@ -18,6 +18,14 @@ type Authorization interface {
 }
 
 type Place interface {
+	likeStr(str string) string
+	localType(placeType int) string
+	houseType(houseType int) string
+	getAllPhotos(placeId int) ([]string, error)
+	sortByOrder(srtBy string, srtOrder string) string
+	formatNumber(number []byte) (string)
+	getShedule(placeId int) ([]ent.Shedule, error)
+
 	GetPlaceByID(id int) (interface{}, error)
 	GetAllPlaces(placeInd int,params *ent.PlaceQueryParams) (interface{}, error)
 	GetAllPlacesBySearch(params *ent.PlaceQueryParams)(interface{},error)

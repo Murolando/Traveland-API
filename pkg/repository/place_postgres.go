@@ -37,7 +37,7 @@ func (r PlaceBD) likeStr(str string) string {
 		return ``
 	} else {
 		line := "%%" + str + "%%"
-		query := fmt.Sprintf(`AND (name LIKE '%s' OR description LIKE '%s') `, line, line)
+		query := fmt.Sprintf(`AND (LOWER(name) ILIKE LOWER('%s') OR LOWER(description) LIKE LOWER('%s')) `, line, line)
 		return query
 	}
 }
@@ -99,6 +99,27 @@ func (r PlaceBD) getShedule(placeId int) ([]ent.Shedule, error) {
 	return shedulers, nil
 }
 
+func (r PlaceBD) formatNumber(number []byte) (string) {
+	var newNum []byte
+	newNum = append(newNum,number[0] )
+	newNum = append(newNum, byte('(') )
+	newNum = append(newNum,number[1] )
+	newNum = append(newNum,number[2] )
+	newNum = append(newNum,number[3] )
+	newNum = append(newNum,byte(')') )
+	newNum = append(newNum,number[4] )
+	newNum = append(newNum,number[5] )
+	newNum = append(newNum,number[6] )
+	newNum = append(newNum, byte('-') )
+	newNum = append(newNum,number[7] )
+	newNum = append(newNum,number[8] )
+	newNum = append(newNum,byte('-') )
+	newNum = append(newNum,number[9] )
+	newNum = append(newNum,number[10])
+
+	return string(newNum)
+	
+}
 func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 	// take place types
 	query := fmt.Sprintf("SELECT type_id FROM \"%s\" WHERE place_id = $1", placeTypeTable)
@@ -146,6 +167,9 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		// if err != nil{
 		// 	return ent.Housing{},err
 		// }
+		if (house.PlaceInfo.Number.Valid && len(house.PlaceInfo.Number.String) == 11){
+			house.PlaceInfo.Number.String = r.formatNumber([]byte(house.PlaceInfo.Number.String))
+		}
 		return house, nil
 	case 2:
 		var event ent.Event
@@ -168,7 +192,11 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		// if err != nil{
 		// 	return ent.Event{},err
 		// }
+		if (event.PlaceInfo.Number.Valid && len(event.PlaceInfo.Number.String) == 11){
+			event.PlaceInfo.Number.String = r.formatNumber([]byte(event.PlaceInfo.Number.String))
+		}
 		return event, nil
+		
 	default:
 		var location ent.Location
 		query = fmt.Sprintf(`
@@ -188,6 +216,9 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		// if err != nil{
 		// 	return ent.Location{},err
 		// }
+		if (location.PlaceInfo.Number.Valid && len(location.PlaceInfo.Number.String) == 11){
+			location.PlaceInfo.Number.String = r.formatNumber([]byte(location.PlaceInfo.Number.String))
+		}
 		return location, nil
 	}
 }
@@ -254,7 +285,9 @@ func (r PlaceBD) getAllHousing(params *ent.PlaceQueryParams) (*[]ent.Housing, er
 			&house.PlaceInfo.MeanRating); err != nil {
 			return nil, err
 		}
-
+		if (house.PlaceInfo.Number.Valid && len(house.PlaceInfo.Number.String) == 11){
+			house.PlaceInfo.Number.String = r.formatNumber([]byte(house.PlaceInfo.Number.String))
+		}
 		house.Shedule, err = r.getShedule(house.PlaceInfo.PlaceId)
 		if err != nil {
 			return nil, err
@@ -305,6 +338,9 @@ func (r PlaceBD) getAllEvents(params *ent.PlaceQueryParams) (*[]ent.Event, error
 			&event.PlaceInfo.MeanRating); err != nil {
 			return nil, err
 		}
+		if (event.PlaceInfo.Number.Valid && len(event.PlaceInfo.Number.String) == 11){
+			event.PlaceInfo.Number.String = r.formatNumber([]byte(event.PlaceInfo.Number.String))
+		}
 		event.PlaceInfo.Photos, err = r.getAllPhotos(event.PlaceInfo.PlaceId)
 		if err != nil {
 			return nil, err
@@ -352,7 +388,9 @@ func (r PlaceBD) getAllLocations(params *ent.PlaceQueryParams) (*[]ent.Location,
 			&location.PlaceInfo.NumberOfRating, &location.PlaceInfo.MeanRating); err != nil {
 			return nil, err
 		}
-
+		if (location.PlaceInfo.Number.Valid && len(location.PlaceInfo.Number.String) == 11){
+			location.PlaceInfo.Number.String = r.formatNumber([]byte(location.PlaceInfo.Number.String))
+		}
 		location.Shedule, err = r.getShedule(location.PlaceInfo.PlaceId)
 		if err != nil {
 			return nil, err
