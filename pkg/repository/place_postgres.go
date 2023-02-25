@@ -168,7 +168,9 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		// 	return ent.Housing{},err
 		// }
 		if (house.PlaceInfo.NonFormatNumber.Valid && len(house.PlaceInfo.NonFormatNumber.String) == 11){
+			
 			house.PlaceInfo.Number.String = r.formatNumber([]byte(house.PlaceInfo.NonFormatNumber.String))
+			house.PlaceInfo.Number.Valid = true
 		}
 		return house, nil
 	case 2:
@@ -195,6 +197,7 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		
 		if (event.PlaceInfo.NonFormatNumber.Valid && len(event.PlaceInfo.NonFormatNumber.String) == 11){
 			event.PlaceInfo.Number.String = r.formatNumber([]byte(event.PlaceInfo.NonFormatNumber.String))
+			event.PlaceInfo.Number.Valid = true
 		}
 		return event, nil
 		
@@ -219,6 +222,7 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 		// }
 		if (location.PlaceInfo.NonFormatNumber.Valid && len(location.PlaceInfo.NonFormatNumber.String) == 11){
 			location.PlaceInfo.Number.String = r.formatNumber([]byte(location.PlaceInfo.NonFormatNumber.String))
+			location.PlaceInfo.Number.Valid = true
 		}
 		return location, nil
 	}
@@ -288,6 +292,7 @@ func (r PlaceBD) getAllHousing(params *ent.PlaceQueryParams) (*[]ent.Housing, er
 		}
 		if (house.PlaceInfo.NonFormatNumber.Valid && len(house.PlaceInfo.NonFormatNumber.String) == 11){
 			house.PlaceInfo.Number.String = r.formatNumber([]byte(house.PlaceInfo.NonFormatNumber.String))
+			house.PlaceInfo.Number.Valid = true
 		}
 		house.Shedule, err = r.getShedule(house.PlaceInfo.PlaceId)
 		if err != nil {
@@ -341,6 +346,7 @@ func (r PlaceBD) getAllEvents(params *ent.PlaceQueryParams) (*[]ent.Event, error
 		}
 		if (event.PlaceInfo.NonFormatNumber.Valid && len(event.PlaceInfo.NonFormatNumber.String) == 11){
 			event.PlaceInfo.Number.String = r.formatNumber([]byte(event.PlaceInfo.NonFormatNumber.String))
+			event.PlaceInfo.Number.Valid = true
 		}
 		event.PlaceInfo.Photos, err = r.getAllPhotos(event.PlaceInfo.PlaceId)
 		if err != nil {
@@ -391,6 +397,7 @@ func (r PlaceBD) getAllLocations(params *ent.PlaceQueryParams) (*[]ent.Location,
 		}
 		if (location.PlaceInfo.NonFormatNumber.Valid && len(location.PlaceInfo.NonFormatNumber.String) == 11){
 			location.PlaceInfo.Number.String = r.formatNumber([]byte(location.PlaceInfo.NonFormatNumber.String))
+			location.PlaceInfo.Number.Valid = true
 		}
 		location.Shedule, err = r.getShedule(location.PlaceInfo.PlaceId)
 		if err != nil {
