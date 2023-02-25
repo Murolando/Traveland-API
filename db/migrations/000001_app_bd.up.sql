@@ -52,7 +52,6 @@ CREATE TABLE "place"
     count_room              INT DEFAULT 0, 
     square                  INT DEFAULT 0
 );
-INSERT INTO "place" (name,location_long,location_lat,numbers) values('Отель',0.0,0.0,'89284953254'); 
 CREATE TABLE "place_src"
 (
     id                      serial PRIMARY KEY not null unique,
@@ -89,8 +88,6 @@ CREATE TABLE "place_type"
     place_id                int references "place" (id) on delete cascade not null,
     type_id                 int references "type" (id) on delete cascade not null
 ); 
-INSERT INTO "place_type" (place_id,type_id) values(1,3); 
-
 CREATE TABLE "achieve"
 (
     id                      serial PRIMARY KEY not null unique,
