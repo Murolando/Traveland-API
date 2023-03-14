@@ -4,8 +4,16 @@ type Review struct{
 	ReviewId 	int 	`json:"rewiew-id"`
 	UserId   	int		`json:"user-id"`
 	Rating		int		`json:"rating"`
-	ReviewText 	string	`json:"rewiew-text"`
-	ReviewTime	string	`json:"rewiew-time"`
+	ReviewText 	string	`json:"review-text"`
+	ReviewTime	string	`json:"review-time"`
 	PlaceId		int		`json:"place-id"`
 	GuideId		int		`json:"guide-id"`
+}
+
+type ReviewResponce struct{
+	ReviewId 	int 	`json:"rewiew-id"`
+	UserName	string 	`json:"user-name"`
+	Rating		int		`json:"rating"`
+	ReviewText 	string	`json:"review-text"`
+	ReviewTime	string	`json:"review-time"`
 }

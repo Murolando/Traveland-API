@@ -56,36 +56,53 @@ func (r ReviewBD) DeleteReview(id int,userId int)(bool,error){
 	return false,nil
 }
 
-func (r ReviewBD) GetAllReview(params *ent.ReviewQueryParams)([]ent.Review,error){
+func (r ReviewBD) GetAllReview(params *ent.ReviewQueryParams)([]ent.ReviewResponce,error){
 	placeId := params.PlaceId
 	guideId := params.GuideId
 	limit 	:= params.Limit
 	offset  := params.Offset
-	reviews := make([]ent.Review,0)
+	reviews := make([]ent.ReviewResponce,0)
 	if placeId != 0{
-		query := fmt.Sprintf(`SELECT id,user_id,rating,review_text,review_datetime FROM "%s" WHERE place_id = $1 LIMIT $2 OFFSET $3`, reviewTable)
+		query := fmt.Sprintf(`
+		SELECT id,
+		(SELECT name 
+			FROM "user" 
+			WHERE id = review.user_id) AS name,
+		rating,review_text,review_datetime 
+		FROM "%s" 
+		WHERE place_id = $1 
+		LIMIT $2 
+		OFFSET $3`, reviewTable)
 		rows,err := r.db.Query(query,placeId,limit,offset)
 		if err!=nil{
 			return nil,err
 		}
 		for rows.Next(){
-			var review ent.Review
+			var review ent.ReviewResponce
 	
-			if err := rows.Scan(&review.ReviewId,&review.UserId,&review.Rating,&review.ReviewText,&review.ReviewTime);err!=nil{
+			if err := rows.Scan(&review.ReviewId,&review.UserName,&review.Rating,&review.ReviewText,&review.ReviewTime);err!=nil{
 				return nil, err
 			}
 			reviews = append(reviews, review)
 		}
 	}else{
-		query := fmt.Sprintf(`SELECT id,user_id,rating,review_text,review_datetime FROM "%s" WHERE guide_id = $1 LIMIT $2 OFFSET $3`, reviewTable)		
+		query := fmt.Sprintf(`SELECT id,
+		(SELECT name 
+			FROM "user" 
+			WHERE id = review.user_id) AS name,
+		,rating,review_text,review_datetime 
+		FROM "%s" 
+		WHERE guide_id = $1 
+		LIMIT $2 
+		OFFSET $3`, reviewTable)		
 		rows,err := r.db.Query(query,guideId,limit,offset)
 		if err!=nil{
 			return nil,err
 		}
 		for rows.Next(){
-			var review ent.Review
+			var review ent.ReviewResponce
 	
-			if err := rows.Scan(&review.ReviewId,&review.UserId,&review.Rating,&review.ReviewText,&review.ReviewTime);err!=nil{
+			if err := rows.Scan(&review.ReviewId,&review.UserName,&review.Rating,&review.ReviewText,&review.ReviewTime);err!=nil{
 				return nil, err
 			}
 			reviews = append(reviews, review)
