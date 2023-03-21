@@ -120,6 +120,24 @@ func (r PlaceBD) formatNumber(number []byte) (string) {
 	return string(newNum)
 	
 }
+func (r PlaceBD) getPlaceTypes(placeId int) ([]int,error){
+	line := make([]int,1)
+	query := fmt.Sprintf(`SELECT type_id
+	FROM "%s" 
+	WHERE place_type.place_id=$1 `,placeTypeTable)
+	rows, err := r.db.Query(query, placeId)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next(){
+		var oneType int 
+		if err := rows.Scan(&oneType); err != nil {
+			return nil, err
+		}
+		line = append(line,oneType )
+	}
+	return line,nil
+}
 func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 	// take place types
 	query := fmt.Sprintf("SELECT type_id FROM \"%s\" WHERE place_id = $1", placeTypeTable)
@@ -224,6 +242,12 @@ func (r PlaceBD) GetPlaceByID(id int) (interface{}, error) {
 			location.PlaceInfo.Number.String = r.formatNumber([]byte(location.PlaceInfo.NonFormatNumber.String))
 			location.PlaceInfo.Number.Valid = true
 		}
+
+		location.Types, err = r.getPlaceTypes(location.PlaceInfo.PlaceId)
+		if err!= nil{
+			return nil, err
+		}
+
 		return location, nil
 	}
 }
@@ -405,6 +429,10 @@ func (r PlaceBD) getAllLocations(params *ent.PlaceQueryParams) (*[]ent.Location,
 		}
 		location.PlaceInfo.Photos, err = r.getAllPhotos(location.PlaceInfo.PlaceId)
 		if err != nil {
+			return nil, err
+		}
+		location.Types, err = r.getPlaceTypes(location.PlaceInfo.PlaceId)
+		if err!= nil{
 			return nil, err
 		}
 		locations = append(locations, location)
