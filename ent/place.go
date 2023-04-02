@@ -14,8 +14,8 @@ type Place struct {
 	NonFormatNumber sql.NullString  `json:"non-format-number"`
 	Mail            sql.NullString  `json:"mail"`
 	Url             sql.NullString  `json:"url"`
-	// NumberOfRating  sql.NullInt32   `json:"number-of-rating"`
-	// MeanRating      sql.NullFloat64 `json:"mean-rating"`
+	NumberOfRating  sql.NullInt32   `json:"number-of-rating"`
+	MeanRating      sql.NullFloat64 `json:"mean-rating"`
 	Photos          []string        `json:"photos"`
 	// Shedule        Shedule         `json:"shedule"`
 }
