@@ -7,7 +7,7 @@ import (
 type Review interface{
 	AddReview(review ent.Review) (int,error)
 	DeleteReview(id int,userId int)(bool,error)
-	GetAllReview(params *ent.ReviewQueryParams)([]ent.ReviewResponce,error)
+	GetAllReview(params *ent.ReviewQueryParams)(*ent.AllReviewResponce,error)
 	UpdateReview(reviewId int,rating int, reviewText string) (bool,error)
 }
 type Authorization interface {

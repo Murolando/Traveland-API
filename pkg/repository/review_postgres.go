@@ -56,13 +56,25 @@ func (r ReviewBD) DeleteReview(id int,userId int)(bool,error){
 	return false,nil
 }
 
-func (r ReviewBD) GetAllReview(params *ent.ReviewQueryParams)([]ent.ReviewResponce,error){
+func (r ReviewBD) GetAllReview(params *ent.ReviewQueryParams)(*ent.AllReviewResponce,error){
 	placeId := params.PlaceId
 	guideId := params.GuideId
 	limit 	:= params.Limit
 	offset  := params.Offset
-	reviews := make([]ent.ReviewResponce,0)
+	var reviews ent.AllReviewResponce
+	reviews.Reviews = make([]ent.ReviewResponce,0)
 	if placeId != 0{
+		queryAvg := fmt.Sprintf(`
+		SELECT 
+			AVG(rating)
+			FROM "%s" 
+			WHERE place_id = $1
+		`,reviewTable)
+		row := r.db.QueryRow(queryAvg,placeId)
+		if err := row.Scan(&reviews.MeanRating);err!=nil{
+			return nil,err
+		}
+
 		query := fmt.Sprintf(`
 		SELECT id,
 		(SELECT name 
@@ -83,9 +95,20 @@ func (r ReviewBD) GetAllReview(params *ent.ReviewQueryParams)([]ent.ReviewRespon
 			if err := rows.Scan(&review.ReviewId,&review.UserName,&review.Rating,&review.ReviewText,&review.ReviewTime);err!=nil{
 				return nil, err
 			}
-			reviews = append(reviews, review)
+			reviews.Reviews = append(reviews.Reviews, review)
 		}
 	}else{
+		queryAvg := fmt.Sprintf(`
+		SELECT 
+			AVG(rating)
+			FROM "%s" 
+			WHERE guide_id = $1
+		`,reviewTable)
+		row := r.db.QueryRow(queryAvg,guideId)
+		if err := row.Scan(&reviews.MeanRating);err!=nil{
+			return nil,err
+		}
+
 		query := fmt.Sprintf(`SELECT id,
 		(SELECT name 
 			FROM "user" 
@@ -105,11 +128,11 @@ func (r ReviewBD) GetAllReview(params *ent.ReviewQueryParams)([]ent.ReviewRespon
 			if err := rows.Scan(&review.ReviewId,&review.UserName,&review.Rating,&review.ReviewText,&review.ReviewTime);err!=nil{
 				return nil, err
 			}
-			reviews = append(reviews, review)
+			reviews.Reviews = append(reviews.Reviews, review)
 		}
 	}
 	
-	return reviews,nil
+	return &reviews,nil
 }
 
 func (r ReviewBD) UpdateReview(reviewId int,rating int, reviewText string) (bool,error){

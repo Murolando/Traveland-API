@@ -20,7 +20,7 @@ func (s *ReviewService) AddReview(review ent.Review) (int,error){
 func (s *ReviewService) DeleteReview(id int,userId int)(bool,error){
 	return s.repo.DeleteReview(id,userId)
 }
-func (s *ReviewService) GetAllReview(params *ent.ReviewQueryParams)([]ent.ReviewResponce,error){
+func (s *ReviewService) GetAllReview(params *ent.ReviewQueryParams)(*ent.AllReviewResponce,error){
 	return s.repo.GetAllReview(params)
 }
 func (s *ReviewService) UpdateReview(reviewId int,rating int, reviewText string) (bool,error){

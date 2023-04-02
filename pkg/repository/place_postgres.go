@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 	"strconv"
 
@@ -275,6 +276,8 @@ func (r PlaceBD) GetAllPlaces(placeInd int, params *ent.PlaceQueryParams) (inter
 	}
 }
 func (r PlaceBD) getAllHousing(params *ent.PlaceQueryParams) (*[]ent.Housing, error) {
+	var avg sql.NullFloat64
+	var count sql.NullInt64
 	houses := make([]ent.Housing, 0)
 	query := fmt.Sprintf(`SELECT DISTINCT place.id,place.name,place.description,
 	place.location_long,place.location_lat,place.address,place.numbers,
@@ -310,8 +313,7 @@ func (r PlaceBD) getAllHousing(params *ent.PlaceQueryParams) (*[]ent.Housing, er
 			&house.PlaceInfo.Longitude,
 			&house.PlaceInfo.Latitude, &house.PlaceInfo.Adress,
 			&house.PlaceInfo.NonFormatNumber, &house.PlaceInfo.Mail, &house.PlaceInfo.Url,
-			&house.HousePrice, &house.HouseTypeId, &house.PlaceInfo.NumberOfRating,
-			&house.PlaceInfo.MeanRating); err != nil {
+			&house.HousePrice, &house.HouseTypeId,&count,&avg ); err != nil {
 			return nil, err
 		}
 		if house.PlaceInfo.NonFormatNumber.Valid && len(house.PlaceInfo.NonFormatNumber.String) == 11 {
@@ -332,6 +334,8 @@ func (r PlaceBD) getAllHousing(params *ent.PlaceQueryParams) (*[]ent.Housing, er
 	return &houses, nil
 }
 func (r PlaceBD) getAllEvents(params *ent.PlaceQueryParams) (*[]ent.Event, error) {
+	var avg sql.NullFloat64
+	var count sql.NullInt64
 	events := make([]ent.Event, 0)
 	query := fmt.Sprintf(`SELECT DISTINCT place.id,place.name,place.description,
 	place.location_long,place.location_lat,place.address,place.numbers,
@@ -364,8 +368,7 @@ func (r PlaceBD) getAllEvents(params *ent.PlaceQueryParams) (*[]ent.Event, error
 			&event.PlaceInfo.Latitude, &event.PlaceInfo.Adress,
 			&event.PlaceInfo.NonFormatNumber, &event.PlaceInfo.Mail, &event.PlaceInfo.Url,
 			&event.Price, &event.EventDay, &event.EventStartTime,
-			&event.EventEndTime, &event.PlaceInfo.NumberOfRating,
-			&event.PlaceInfo.MeanRating); err != nil {
+			&event.EventEndTime,&count,&avg); err != nil {
 			return nil, err
 		}
 		if event.PlaceInfo.NonFormatNumber.Valid && len(event.PlaceInfo.NonFormatNumber.String) == 11 {
@@ -381,6 +384,8 @@ func (r PlaceBD) getAllEvents(params *ent.PlaceQueryParams) (*[]ent.Event, error
 	return &events, nil
 }
 func (r PlaceBD) getAllLocations(params *ent.PlaceQueryParams) (*[]ent.Location, error) {
+	var avg sql.NullFloat64
+	var count sql.NullInt64
 	locations := make([]ent.Location, 0)
 	query := fmt.Sprintf(`SELECT DISTINCT place.id,
 	place.name,place.description,place.location_long,
@@ -415,8 +420,7 @@ func (r PlaceBD) getAllLocations(params *ent.PlaceQueryParams) (*[]ent.Location,
 			&location.PlaceInfo.Description,
 			&location.PlaceInfo.Longitude, &location.PlaceInfo.Latitude,
 			&location.PlaceInfo.Adress, &location.PlaceInfo.NonFormatNumber,
-			&location.PlaceInfo.Mail, &location.PlaceInfo.Url, &location.MinPrice,
-			&location.PlaceInfo.NumberOfRating, &location.PlaceInfo.MeanRating); err != nil {
+			&location.PlaceInfo.Mail, &location.PlaceInfo.Url, &location.MinPrice, &count,&avg); err != nil {
 			return nil, err
 		}
 		if location.PlaceInfo.NonFormatNumber.Valid && len(location.PlaceInfo.NonFormatNumber.String) == 11 {

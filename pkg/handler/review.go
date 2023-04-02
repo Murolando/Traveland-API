@@ -70,5 +70,5 @@ func (h *Handler) getAllReview(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	newResponse(c, "reviews", reviews)
+	newResponse(c, "", reviews)
 }
